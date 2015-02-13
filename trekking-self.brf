@@ -22,7 +22,7 @@ assign turncost 30
 
 assign initialcost 
 	switch route=ferry	5000
-	switch highway=steps	100
+	switch highway=steps	400
 	0
 
 #
@@ -114,8 +114,8 @@ assign costfactor
 		switch or highway=tertiary highway=tertiary_link    1
 		switch    highway=unclassified                      1
 		switch    highway=pedestrian                        5
-		switch    highway=steps                             50
-		switch    route=ferry                               5.67
+		switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+		switch    route=ferry                               5.67 # see issue 28 on github
 		switch    highway=cycleway                          1.1
 		switch    highway=residential                       1
 		switch    highway=living_street                     1.8

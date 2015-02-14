@@ -1,0 +1,24 @@
+---context:global
+
+assign   validForBikes        1
+
+assign downhillcost 0
+assign downhillcutoff 1.5
+assign uphillcost 0
+assign uphillcutoff 1.5
+
+
+
+---context:way
+
+assign turncost 30
+
+assign initialcost 0
+
+assign costfactor 1
+
+
+
+---context:node
+
+assign initialcost 0

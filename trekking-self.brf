@@ -12,6 +12,8 @@ assign downhillcutoff 1.5
 assign uphillcost switch consider_elevation 20 0
 assign uphillcutoff 1.5
 
+
+
 ---context:way   # following code refers to way-tags
 
 assign any_cycleroute or route_bicycle_icn=yes or route_bicycle_ncn=yes or route_bicycle_rcn=yes route_bicycle_lcn=yes
@@ -25,7 +27,63 @@ assign initialcost
 	switch highway=steps	400
 	0
 
-#
+
+assign trafficCost
+	switch and highway= not route=ferry                 forbidden
+	switch or highway=motorway highway=motorway_link    forbidden
+	switch or highway=proposed highway=abandoned        forbidden
+	switch or highway=trunk highway=trunk_link          10
+	switch or highway=primary highway=primary_link      1.3
+	switch or highway=secondary highway=secondary_link  1
+	switch or highway=tertiary highway=tertiary_link    1
+	switch    highway=unclassified                      1
+	switch    highway=residential                       1
+	switch    highway=service                           1
+	switch    highway=living_street                     1.8
+	switch    highway=footway                           5
+	switch    highway=pedestrian                        5
+	switch    highway=cycleway                          1.1
+	switch    highway=bridleway                         1.1
+	switch    highway=track                             1.1
+	switch    highway=path                              1
+	switch    highway=road                              2
+	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+	switch    route=ferry                               5.67 # see issue 28 on github
+	2
+
+
+assign surfaceCost
+	switch smoothness=excellent		1
+	switch smoothness=good			1
+	switch smoothness=intermediate	1.05
+	switch smoothness=bad			1.3
+	switch smoothness=very_bad		3
+	switch smoothness=horrible		5
+	switch smoothness=very_horrible	6
+	switch mtb:scale=0-	1
+	switch mtb:scale=0	1.1
+	switch mtb:scale=0+	1.3
+	switch mtb:scale=1-	5
+	switch mtb:scale=1	5
+	switch mtb:scale=1+	5
+	switch mtb:scale=2-	6
+	switch mtb:scale=2	6
+	switch mtb:scale=2+	6
+	switch mtb:scale=3	8
+	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
+	switch or mtb:scale=5 sac_scale=alpine_hiking			400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
+	switch sac_scale=difficult_alpine_hiking				2000
+	switch smoothness=impassable	50
+	switch tracktype=grade1		1
+	switch tracktype=grade2		1
+	switch tracktype=grade3		1.1
+	switch tracktype=grade4		1.4
+	switch tracktype=grade5		2
+	switch bicycle=designated	1.1
+	2
+	
+
 # implicit access here just from the motorroad tag
 # (implicit access rules from highway tag handled elsewhere)
 #
@@ -34,18 +92,13 @@ assign defaultAccess
 		not motorroad=yes
 		not or access=private access=no
 
-#
-# calculate logical bike access
-#
 
+# logical bike access
+#
 assign highwayDefaultBicycleNo or highway=footway or highway=pedestrian highway=bridleway
-#assign highwayDefaultBicycleYes not highwayDefaultBicycleNo
 assign bicycleExplicitAllowed or bicycle=yes or bicycle=designated vehicle=yes
 assign bicycleExplicitForbidden or bicycle=private or bicycle=no bicycle=dismount 
 assign vehicleExplicitForbidden or vehicle=private vehicle=no
-#assign footwayAccess
-#	or	highwayDefaultBicycleYes 
-#		bicycleExplicitelyAllowed
 
 assign vehicleAccess
 	switch vehicle=
@@ -60,8 +113,8 @@ assign bikeAccess
 				vehicleAccess
 				not bicycleExplicitForbidden
 
-#
-# calculate logical foot access
+
+# logical foot access
 #
 assign footAccess
 	or	bicycle=dismount
@@ -69,7 +122,6 @@ assign footAccess
 				defaultAccess
 				not or foot=private foot=no
 
-#
 # if not bike-, but foot-access, just a moderate penalty,
 # otherwise access is forbidden
 #
@@ -80,7 +132,7 @@ assign accessPenalty
                      10
                      forbidden
 
-#
+
 # handle one-ways. On primary roads, wrong-oneways should
 # be close to forbidden, while on other ways we just add
 # 4 to the costfactor (making it at least 5 - you are allowed
@@ -101,56 +153,13 @@ assign onewayPenalty
 	0
 
 assign costfactor
+	add	1
+	add	add -1 trafficCost
+	add	add -1 surfaceCost
+		max onewayPenalty accessPenalty
 
-	add	max onewayPenalty accessPenalty
 
-		switch and highway= not route=ferry  forbidden
-	
-		switch or highway=motorway highway=motorway_link    forbidden
-		switch or highway=proposed highway=abandoned        forbidden
-		switch or highway=trunk highway=trunk_link          10
-		switch or highway=primary highway=primary_link      1.3
-		switch or highway=secondary highway=secondary_link  1.1
-		switch or highway=tertiary highway=tertiary_link    1
-		switch    highway=unclassified                      1
-		switch    highway=pedestrian                        5
-		switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
-		switch    route=ferry                               5.67 # see issue 28 on github
-		switch    highway=cycleway                          1.1
-		switch    highway=residential                       1
-		switch    highway=living_street                     1.8
-		switch    highway=service                           1
-		switch or highway=track or highway=bridleway or highway=road or highway=path or highway=footway
-			switch smoothness=excellent		1
-			switch smoothness=good			1
-			switch smoothness=intermediate	1
-			switch smoothness=bad			1.1
-			switch smoothness=very_bad		3
-			switch smoothness=horrible		5
-			switch smoothness=very_horrible	6
-			switch mtb:scale=0-	1
-			switch mtb:scale=0	1.2
-			switch mtb:scale=0+	2
-			switch mtb:scale=1-	5
-			switch mtb:scale=1	5
-			switch mtb:scale=1+	5
-			switch mtb:scale=2-	6
-			switch mtb:scale=2	6
-			switch mtb:scale=2+	6
-			switch mtb:scale=3	8
-			switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
-			switch or mtb:scale=5 sac_scale=alpine_hiking			400
-			switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
-			switch sac_scale=difficult_alpine_hiking				2000
-			switch smoothness=impassable		50
-			switch tracktype=grade1 1
-			switch tracktype=grade2 1
-			switch tracktype=grade3 1.1
-			switch tracktype=grade4 1.4
-			switch tracktype=grade5 2
-			switch bicycle=designated 1
-			2
-		10
+
 
 ---context:node  # following code refers to node tags
 

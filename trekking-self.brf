@@ -120,7 +120,7 @@ assign costfactor
 		switch    highway=residential                       1
 		switch    highway=living_street                     1.8
 		switch    highway=service                           1
-		switch or highway=track or highway=bridleway or highway=road or highway=path or highway=footway highway=pedestrian
+		switch or highway=track or highway=bridleway or highway=road or highway=path or highway=footway
 			switch smoothness=excellent		1
 			switch smoothness=good			1
 			switch smoothness=intermediate	1

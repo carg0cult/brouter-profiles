@@ -283,6 +283,48 @@ assign uphillcostfactor
 
 ---context:node  # following code refers to node tags
 
+assign barrierPenalties
+	switch barrier=gate				500
+	switch barrier=lift_gate			50
+	switch barrier=stile				800
+	switch barrier=cycle_barrier			150
+	switch barrier=cattle_grid			20
+	switch barrier=kissing_gate			800
+	switch barrier=turnstile			800
+	switch barrier=fence				10000
+	switch barrier=border_control			500
+	switch barrier=sally_port			100
+	switch barrier=chain				500
+	switch barrier=door				500
+	switch barrier=swing_gate			30
+	switch barrier=bump_gate			500
+	switch barrier=hampshire_gate			700
+	switch barrier=wall				10000
+	switch barrier=ditch				10000
+	switch barrier=debris				500
+	switch barrier=log				400
+	#switch barrier=chicane				
+	switch barrier=kerb				100
+	switch barrier=sump_buster			0
+	#switch barrier=obstacle				100
+	switch barrier=horse_stile			600
+	switch barrier=full-height_turnstile	10000
+	#switch barrier=windfall				100
+	switch barrier=spikes				1000
+	#switch barrier=checkpoint			100
+	switch barrier=hedge				10000
+	#switch barrier=footgate				100
+	switch barrier=tree				400
+	switch barrier=guard_rail			800
+	#switch barrier=bar				100
+	#switch barrier=fallen_tree			100
+	#switch barrier=jersey_barrier			100
+	#switch barrier=motorcycle_barrier		100
+	#switch barrier=rope				100
+	#switch barrier=stone				100
+	#switch barrier=traffic_crossing_pole	100
+	0
+
 assign defaultAccess
        switch access=
               1 # add default barrier restrictions here!
@@ -311,8 +353,9 @@ assign footAccess
                         1
 
 assign initialcost
-       switch bikeAccess
-              0 
-              switch footAccess
-                     300
-                     forbidden
+	add	barrierPenalties
+		switch bikeAccess
+				0 
+				switch footAccess
+					300
+					forbidden

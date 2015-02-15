@@ -7,9 +7,9 @@ assign forbidden 1000000
 
 assign   validForBikes        1
 
-assign downhillcost switch consider_elevation 20 0
+assign downhillcost switch consider_elevation 30 0
 assign downhillcutoff 1.5
-assign uphillcost switch consider_elevation 20 0
+assign uphillcost 0
 assign uphillcutoff 1.5
 
 

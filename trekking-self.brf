@@ -51,6 +51,52 @@ assign trafficCost
 	switch    route=ferry                               5.67 # see issue 28 on github
 	2
 
+assign trafficCostDownhill
+	switch and highway= not route=ferry                 forbidden
+	switch or highway=motorway highway=motorway_link    forbidden
+	switch or highway=proposed highway=abandoned        forbidden
+	switch or highway=trunk highway=trunk_link          8
+	switch or highway=primary highway=primary_link      1
+	switch or highway=secondary highway=secondary_link  1
+	switch or highway=tertiary highway=tertiary_link    1
+	switch    highway=unclassified                      1.5
+	switch    highway=residential                       1.5
+	switch    highway=service                           1.5
+	switch    highway=living_street                     3
+	switch    highway=footway                           8
+	switch    highway=pedestrian                        8
+	switch    highway=cycleway                          1.4
+	switch    highway=bridleway                         1.3
+	switch    highway=track                             1.3
+	switch    highway=path                              2
+	switch    highway=road                              2
+	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+	switch    route=ferry                               5.67 # see issue 28 on github
+	2
+
+assign trafficCostUphill
+	switch and highway= not route=ferry                 forbidden
+	switch or highway=motorway highway=motorway_link    forbidden
+	switch or highway=proposed highway=abandoned        forbidden
+	switch or highway=trunk highway=trunk_link          20
+	switch or highway=primary highway=primary_link      2
+	switch or highway=secondary highway=secondary_link  1.2
+	switch or highway=tertiary highway=tertiary_link    1
+	switch    highway=unclassified                      1
+	switch    highway=residential                       1
+	switch    highway=service                           1
+	switch    highway=living_street                     1.2
+	switch    highway=footway                           2
+	switch    highway=pedestrian                        2
+	switch    highway=cycleway                          1
+	switch    highway=bridleway                         1
+	switch    highway=track                             1
+	switch    highway=path                              1
+	switch    highway=road                              2
+	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+	switch    route=ferry                               5.67 # see issue 28 on github
+	2
+
 
 assign surfaceCost
 	switch smoothness=excellent		1
@@ -61,7 +107,69 @@ assign surfaceCost
 	switch smoothness=horrible		5
 	switch smoothness=very_horrible	6
 	switch mtb:scale=0-	1
-	switch mtb:scale=0	1.1
+	switch mtb:scale=0	1
+	switch mtb:scale=0+	1.3
+	switch mtb:scale=1-	5
+	switch mtb:scale=1	5
+	switch mtb:scale=1+	5
+	switch mtb:scale=2-	6
+	switch mtb:scale=2	6
+	switch mtb:scale=2+	6
+	switch mtb:scale=3	8
+	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
+	switch or mtb:scale=5 sac_scale=alpine_hiking			400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
+	switch sac_scale=difficult_alpine_hiking				2000
+	switch smoothness=impassable	50
+	switch tracktype=grade1		1
+	switch tracktype=grade2		1
+	switch tracktype=grade3		1.1
+	switch tracktype=grade4		1.4
+	switch tracktype=grade5		2
+	switch bicycle=designated	1.1
+	2
+
+assign surfaceCostDownhill
+	switch smoothness=excellent		1
+	switch smoothness=good			1
+	switch smoothness=intermediate	1.1
+	switch smoothness=bad			1.6
+	switch smoothness=very_bad		4
+	switch smoothness=horrible		7
+	switch smoothness=very_horrible	10
+	switch mtb:scale=0-	1
+	switch mtb:scale=0	1
+	switch mtb:scale=0+	1.8
+	switch mtb:scale=1-	6
+	switch mtb:scale=1	6
+	switch mtb:scale=1+	6
+	switch mtb:scale=2-	8
+	switch mtb:scale=2	8
+	switch mtb:scale=2+	8
+	switch mtb:scale=3	12
+	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
+	switch or mtb:scale=5 sac_scale=alpine_hiking			400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
+	switch sac_scale=difficult_alpine_hiking				2000
+	switch smoothness=impassable	50
+	switch tracktype=grade1		1
+	switch tracktype=grade2		1
+	switch tracktype=grade3		1.3
+	switch tracktype=grade4		1.8
+	switch tracktype=grade5		2.5
+	switch bicycle=designated	1.1
+	2
+
+assign surfaceCostUphill
+	switch smoothness=excellent		1
+	switch smoothness=good			1
+	switch smoothness=intermediate	1
+	switch smoothness=bad			1.1
+	switch smoothness=very_bad		3
+	switch smoothness=horrible		5
+	switch smoothness=very_horrible	6
+	switch mtb:scale=0-	1
+	switch mtb:scale=0	1
 	switch mtb:scale=0+	1.3
 	switch mtb:scale=1-	5
 	switch mtb:scale=1	5
@@ -156,6 +264,18 @@ assign costfactor
 	add	1
 	add	add -1 trafficCost
 	add	add -1 surfaceCost
+		max onewayPenalty accessPenalty
+
+assign downhillcostfactor
+	add	1
+	add	add -1 trafficCostDownhill
+	add	add -1 surfaceCostDownhill
+		max onewayPenalty accessPenalty
+
+assign uphillcostfactor
+	add	1
+	add	add -1 trafficCostUphill
+	add	add -1 surfaceCostUphill
 		max onewayPenalty accessPenalty
 
 

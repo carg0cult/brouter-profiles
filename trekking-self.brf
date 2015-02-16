@@ -43,8 +43,8 @@ assign trafficCost
 	switch    highway=footway                           5
 	switch    highway=pedestrian                        5
 	switch    highway=cycleway                          1.1
-	switch    highway=bridleway                         1.1
-	switch    highway=track                             1.1
+	switch    highway=bridleway                         1
+	switch    highway=track                             1
 	switch    highway=path                              1
 	switch    highway=road                              2
 	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
@@ -59,15 +59,15 @@ assign trafficCostDownhill
 	switch or highway=primary highway=primary_link      1
 	switch or highway=secondary highway=secondary_link  1
 	switch or highway=tertiary highway=tertiary_link    1
-	switch    highway=unclassified                      1.5
-	switch    highway=residential                       1.5
-	switch    highway=service                           1.5
+	switch    highway=unclassified                      1.1
+	switch    highway=residential                       1.2
+	switch    highway=service                           1.1
 	switch    highway=living_street                     3
 	switch    highway=footway                           8
 	switch    highway=pedestrian                        8
-	switch    highway=cycleway                          1.4
-	switch    highway=bridleway                         1.3
-	switch    highway=track                             1.3
+	switch    highway=cycleway                          1.2
+	switch    highway=bridleway                         1.1
+	switch    highway=track                             1.1
 	switch    highway=path                              2
 	switch    highway=road                              2
 	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work

@@ -98,6 +98,24 @@ assign trafficCostUphill
 	2
 
 
+assign smoothnessDefaultGood
+	switch	or highway=motorway
+			or highway=motorway_link
+			or highway=trunk
+			or highway=trunk_link
+			or highway=primary
+			or highway=primary_link
+			or highway=secondary
+			or highway=secondary_link
+			or highway=tertiary
+			or highway=tertiary_link
+			or highway=unclassified
+			or highway=residential
+			or highway=living_street
+			   highway=pedestrian
+			1
+			0
+
 assign surfaceCost
 	switch smoothness=excellent		1
 	switch smoothness=good			1
@@ -127,6 +145,7 @@ assign surfaceCost
 	switch tracktype=grade4		1.4
 	switch tracktype=grade5		2
 	switch bicycle=designated	1.1
+	switch smoothnessDefaultGood	1
 	2
 
 assign surfaceCostDownhill
@@ -158,6 +177,7 @@ assign surfaceCostDownhill
 	switch tracktype=grade4		1.8
 	switch tracktype=grade5		2.5
 	switch bicycle=designated	1.1
+	switch smoothnessDefaultGood	1
 	2
 
 assign surfaceCostUphill
@@ -189,6 +209,7 @@ assign surfaceCostUphill
 	switch tracktype=grade4		1.4
 	switch tracktype=grade5		2
 	switch bicycle=designated	1.1
+	switch smoothnessDefaultGood	1
 	2
 	
 

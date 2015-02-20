@@ -393,6 +393,9 @@ assign barrierPenalties
 	#switch barrier=traffic_crossing_pole	100
 	0
 
+assign trafficSignalPenalty
+	switch highway=traffic_signals 400 0
+
 assign defaultAccess
        switch access=
               1 # add default barrier restrictions here!
@@ -422,6 +425,7 @@ assign footAccess
 
 assign initialcost
 	add	barrierPenalties
+	add	trafficSignalPenalty
 		switch bikeAccess
 				0 
 				switch footAccess

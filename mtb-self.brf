@@ -1,93 +1,268 @@
----context:global   # following code refers to global config
-
-# generate a bike route
-assign validForBikes            1
-assign validForCars             0
+---context:global
 
 assign forbidden 1000000
 
+assign validForBikes 1
 
----context:way   # following code refers to way-tags
+assign downhillcost 15
+assign downhillcutoff 1.5
+assign uphillcost 0
+assign uphillcutoff 1.5
 
-assign turncost 0
 
-assign initialcost switch route=ferry 5000 0
 
-assign highwayPenalty
-	switch or highway=motorway highway=motorway_link	forbidden
-	switch or highway=trunk highway=trunk_link		50
-	switch highway=primary						5
-	switch highway=steps switch mtb:scale=			100 0
+---context:way
+
+assign any_cycleroute or route_bicycle_icn=yes or route_bicycle_ncn=yes or route_bicycle_rcn=yes route_bicycle_lcn=yes
+assign nodeaccessgranted or any_cycleroute lcn=yes
+
+
+assign turncost 10
+
+assign initialcost 
+	switch route=ferry	5000
+	switch highway=steps	10
 	0
 
+
+assign trafficCost
+	switch and highway= not route=ferry                 forbidden
+	switch or highway=motorway highway=motorway_link    forbidden
+	switch or highway=proposed highway=abandoned        forbidden
+	switch or highway=trunk highway=trunk_link          10
+	switch or highway=primary highway=primary_link      1.3
+	switch or highway=secondary highway=secondary_link  1
+	switch or highway=tertiary highway=tertiary_link    1
+	switch    highway=unclassified                      1
+	switch    highway=residential                       1
+	switch    highway=service                           1
+	switch    highway=living_street                     1.8
+	switch    highway=footway                           5
+	switch    highway=pedestrian                        5
+	switch    highway=cycleway                          1.1
+	switch    highway=bridleway                         1
+	switch    highway=track                             1
+	switch    highway=path                              1
+	switch    highway=road                              2
+	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+	switch    route=ferry                               5.67 # see issue 28 on github
+	2
+
+assign trafficCostDownhill
+	switch and highway= not route=ferry                 forbidden
+	switch or highway=motorway highway=motorway_link    forbidden
+	switch or highway=proposed highway=abandoned        forbidden
+	switch or highway=trunk highway=trunk_link          8
+	switch or highway=primary highway=primary_link      1
+	switch or highway=secondary highway=secondary_link  1
+	switch or highway=tertiary highway=tertiary_link    1
+	switch    highway=unclassified                      1.1
+	switch    highway=residential                       1.2
+	switch    highway=service                           1.1
+	switch    highway=living_street                     3
+	switch    highway=footway                           8
+	switch    highway=pedestrian                        8
+	switch    highway=cycleway                          1.1
+	switch    highway=bridleway                         1
+	switch    highway=track                             1
+	switch    highway=path                              1
+	switch    highway=road                              2
+	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+	switch    route=ferry                               5.67 # see issue 28 on github
+	2
+
+assign trafficCostUphill
+	switch and highway= not route=ferry                 forbidden
+	switch or highway=motorway highway=motorway_link    forbidden
+	switch or highway=proposed highway=abandoned        forbidden
+	switch or highway=trunk highway=trunk_link          20
+	switch or highway=primary highway=primary_link      2
+	switch or highway=secondary highway=secondary_link  1.2
+	switch or highway=tertiary highway=tertiary_link    1
+	switch    highway=unclassified                      1
+	switch    highway=residential                       1
+	switch    highway=service                           1
+	switch    highway=living_street                     1.2
+	switch    highway=footway                           2
+	switch    highway=pedestrian                        2
+	switch    highway=cycleway                          1
+	switch    highway=bridleway                         1
+	switch    highway=track                             1
+	switch    highway=path                              1
+	switch    highway=road                              2
+	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+	switch    route=ferry                               5.67 # see issue 28 on github
+	2
+
+
 assign mtbCost
-	switch and mtb:scale= smoothness=	4
-	switch smoothness=excellent		4
-	switch smoothness=good			4
-	switch smoothness=intermediate	3
-	switch smoothness=bad			2
-	switch smoothness=very_bad		1
-	switch smoothness=horrible		1
-	switch smoothness=very_horrible	1
-	switch mtb:scale=0-	4
-	switch mtb:scale=0	2
-	switch mtb:scale=0+	1.2
-	switch mtb:scale=1-	1
-	switch mtb:scale=1	1
-	switch mtb:scale=1+	1
-	switch mtb:scale=2-	1.2
-	switch mtb:scale=2	1.5
-	switch mtb:scale=2+	1.8
-	switch mtb:scale=3	8
+	switch class:bicycle:mtb=3		1
+	switch class:bicycle:mtb=2		2
+	switch class:bicycle:mtb=1		2.7
+	switch class:bicycle:mtb=-1		5
+	switch class:bicycle:mtb=-2		10
+	switch class:bicycle:mtb=-3		100
+	switch smoothness=excellent		5
+	switch smoothness=good			5
+	switch smoothness=intermediate	4
+	switch smoothness=bad			2.7
+	switch smoothness=very_bad		2
+	switch smoothness=horrible		2
+	switch smoothness=very_horrible	2
+	switch mtb:scale=0-	3
+	switch mtb:scale=0	3
+	switch mtb:scale=0+	2.5
+	switch mtb:scale=1-	2
+	switch mtb:scale=1	2
+	switch mtb:scale=1+	2
+	switch mtb:scale=2-	2
+	switch mtb:scale=2	2
+	switch mtb:scale=2+	2.5
+	switch mtb:scale=3	3
 	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
 	switch or mtb:scale=5 sac_scale=alpine_hiking			400
 	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
 	switch sac_scale=difficult_alpine_hiking				2000
-	switch smoothness=impassable		50
-	4
+	switch smoothness=impassable	50
+	switch surface=asphalt		5
+	switch surface=paved		5
+	switch surface=unpaved		3
+	switch surface=gravel		3
+	switch surface=ground		2.5
+	switch surface=dirt		2.5
+	switch surface=grass		2.5
+	switch surface=concrete		5
+	switch surface=paving_stones	5
+	switch surface=cobblestone	3
+	switch surface=compacted	3
+	switch surface=sand		5
+	switch surface=wood		3
+	switch surface=pebblestone	3
+	switch surface=fine_gravel	4
+	switch surface=mud		200
+	switch tracktype=grade1		5
+	switch tracktype=grade2		4
+	switch tracktype=grade3		3
+	switch tracktype=grade4		2.7
+	switch tracktype=grade5		2.7
+	switch bicycle=designated	1.1
+	5
+	
 
-assign costfactor add mtbCost highwayPenalty
+assign oneway
+	switch oneway=
+		junction=roundabout
+			oneway=yes
 
----context:node  # following code refers to node tags
+assign onewayPenalty
+	switch switch reversedirection=yes oneway oneway=-1
+		switch or cycleway=opposite or cycleway=opposite_lane or cycleway=opposite_track oneway:bicycle=no 0
+		switch or highway=primary highway=primary_link 50
+		switch or highway=secondary highway=secondary_link 30
+		switch or highway=tertiary highway=tertiary_link 20
+		10
+	0
 
-assign initialcost
-	switch barrier=gate				100
-	switch barrier=lift_gate			100
-	switch barrier=stile				100
-	switch barrier=cycle_barrier			100
-	switch barrier=cattle_grid			100
-	switch barrier=kissing_gate			100
-	switch barrier=turnstile			100
+assign costfactor
+	add	1
+	add	add -1 trafficCost
+	add	add -1 mtbCost
+		onewayPenalty
+
+assign downhillcostfactor
+	add	1
+	add	add -1 trafficCostDownhill
+	add	add -1 mtbCost
+		onewayPenalty
+
+assign uphillcostfactor
+	add	1
+	add	add -1 trafficCostUphill
+	add	add -1 mtbCost
+		onewayPenalty
+
+
+
+
+---context:node
+
+assign barrierPenalties
+	switch barrier=gate				500
+	switch barrier=lift_gate			10
+	switch barrier=stile				800
+	switch barrier=cycle_barrier			150
+	switch barrier=cattle_grid			20
+	switch barrier=kissing_gate			800
+	switch barrier=turnstile			800
 	switch barrier=fence				10000
-	switch barrier=border_control			100
+	switch barrier=border_control			500
 	switch barrier=sally_port			100
-	switch barrier=chain				100
-	switch barrier=door				100
-	switch barrier=swing_gate			100
-	switch barrier=bump_gate			100
-	switch barrier=hampshire_gate			100
+	switch barrier=chain				500
+	switch barrier=door				500
+	switch barrier=swing_gate			0
+	switch barrier=bump_gate			500
+	switch barrier=hampshire_gate			700
 	switch barrier=wall				10000
 	switch barrier=ditch				10000
-	switch barrier=debris				100
-	switch barrier=log				100
-	switch barrier=chicane				100
+	switch barrier=debris				500
+	switch barrier=log				400
+	#switch barrier=chicane				
 	switch barrier=kerb				100
-	switch barrier=sump_buster			100
-	switch barrier=obstacle				100
-	switch barrier=horse_stile			100
+	switch barrier=sump_buster			0
+	#switch barrier=obstacle				100
+	switch barrier=horse_stile			600
 	switch barrier=full-height_turnstile	10000
-	switch barrier=windfall				100
-	switch barrier=spikes				100
-	switch barrier=checkpoint			100
+	#switch barrier=windfall				100
+	switch barrier=spikes				1000
+	#switch barrier=checkpoint			100
 	switch barrier=hedge				10000
-	switch barrier=footgate				100
-	switch barrier=tree				100
-	switch barrier=guard_rail			100
-	switch barrier=bar				100
-	switch barrier=fallen_tree			100
-	switch barrier=jersey_barrier			100
-	switch barrier=motorcycle_barrier		100
-	switch barrier=rope				100
-	switch barrier=stone				100
-	switch barrier=traffic_crossing_pole	100
+	#switch barrier=footgate				100
+	switch barrier=tree				400
+	switch barrier=guard_rail			800
+	#switch barrier=bar				100
+	#switch barrier=fallen_tree			100
+	#switch barrier=jersey_barrier			100
+	#switch barrier=motorcycle_barrier		100
+	#switch barrier=rope				100
+	#switch barrier=stone				100
+	#switch barrier=traffic_crossing_pole	100
 	0
+
+assign trafficSignalPenalty
+	switch highway=traffic_signals 400 0
+
+assign defaultAccess
+       switch access=
+              1 # add default barrier restrictions here!
+              switch or access=private access=no
+                     0
+                     1
+
+assign bikeAccess
+       or nodeaccessgranted=yes
+          switch bicycle=
+                 switch vehicle=
+                        defaultAccess
+                        switch or vehicle=private vehicle=no
+                               0
+                               1
+                 switch or bicycle=private or bicycle=no bicycle=dismount
+                        0
+                        1
+
+assign footAccess
+       or bicycle=dismount
+          switch foot=
+                 defaultAccess
+                 switch or foot=private foot=no
+                        0
+                        1
+
+assign initialcost
+	add	barrierPenalties
+	add	trafficSignalPenalty
+		switch bikeAccess
+				0 
+				switch footAccess
+					300
+					forbidden

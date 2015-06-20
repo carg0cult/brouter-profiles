@@ -19,7 +19,7 @@ assign any_cycleroute or route_bicycle_icn=yes or route_bicycle_ncn=yes or route
 assign nodeaccessgranted or any_cycleroute lcn=yes
 
 
-assign turncost 30
+assign turncost 40
 
 assign initialcost 
 	switch route=ferry	5000
@@ -394,7 +394,7 @@ assign barrierPenalties
 	0
 
 assign trafficSignalPenalty
-	switch highway=traffic_signals 400 0
+	switch highway=traffic_signals 150 0
 
 assign defaultAccess
        switch access=

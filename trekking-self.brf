@@ -132,14 +132,14 @@ assign surfaceCost
 	switch mtb:scale=2+	6
 	switch mtb:scale=3	8
 	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
-	switch or mtb:scale=5 sac_scale=alpine_hiking			400
-	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
-	switch sac_scale=difficult_alpine_hiking				2000
+	switch or mtb:scale=5 sac_scale=alpine_hiking				400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking		500
+	switch sac_scale=difficult_alpine_hiking					2000
 	switch smoothness=impassable	50
 	switch surface=asphalt		1
 	switch surface=paved		1
 	switch surface=unpaved		1.05
-	switch surface=gravel		8
+	switch surface=gravel		3
 	switch surface=ground		2
 	switch surface=dirt		2
 	switch surface=grass		2
@@ -180,14 +180,14 @@ assign surfaceCostDownhill
 	switch mtb:scale=2+	8
 	switch mtb:scale=3	12
 	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
-	switch or mtb:scale=5 sac_scale=alpine_hiking			400
-	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
-	switch sac_scale=difficult_alpine_hiking				2000
+	switch or mtb:scale=5 sac_scale=alpine_hiking				400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking		500
+	switch sac_scale=difficult_alpine_hiking					2000
 	switch smoothness=impassable	50
 	switch surface=asphalt		1
 	switch surface=paved		1
 	switch surface=unpaved		1.1
-	switch surface=gravel		10
+	switch surface=gravel		4
 	switch surface=ground		2
 	switch surface=dirt		2
 	switch surface=grass		2
@@ -228,14 +228,14 @@ assign surfaceCostUphill
 	switch mtb:scale=2+	6
 	switch mtb:scale=3	8
 	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
-	switch or mtb:scale=5 sac_scale=alpine_hiking			400
-	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
-	switch sac_scale=difficult_alpine_hiking				2000
+	switch or mtb:scale=5 sac_scale=alpine_hiking				400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking		500
+	switch sac_scale=difficult_alpine_hiking					2000
 	switch smoothness=impassable	50
 	switch surface=asphalt		1
 	switch surface=paved		1
 	switch surface=unpaved		1
-	switch surface=gravel		8
+	switch surface=gravel		3
 	switch surface=ground		2
 	switch surface=dirt		2
 	switch surface=grass		2

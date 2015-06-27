@@ -1,10 +1,8 @@
----context:global   # following code refers to global config
-
-assign   allow_ferries        1   # set to 0 to disallow ferries
+---context:global
 
 assign forbidden 1000000
 
-assign   validForBikes        1
+assign validForBikes 1
 
 assign downhillcost 15
 assign downhillcutoff 1.5
@@ -134,9 +132,9 @@ assign surfaceCost
 	switch mtb:scale=2+	3
 	switch mtb:scale=3	8
 	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
-	switch or mtb:scale=5 sac_scale=alpine_hiking			400
-	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
-	switch sac_scale=difficult_alpine_hiking				2000
+	switch or mtb:scale=5 sac_scale=alpine_hiking				400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking		500
+	switch sac_scale=difficult_alpine_hiking					2000
 	switch smoothness=impassable	50
 	switch surface=asphalt		1
 	switch surface=paved		1
@@ -182,9 +180,9 @@ assign surfaceCostDownhill
 	switch mtb:scale=2+	3
 	switch mtb:scale=3	8
 	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
-	switch or mtb:scale=5 sac_scale=alpine_hiking			400
-	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
-	switch sac_scale=difficult_alpine_hiking				2000
+	switch or mtb:scale=5 sac_scale=alpine_hiking				400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking		500
+	switch sac_scale=difficult_alpine_hiking					2000
 	switch smoothness=impassable	50
 	switch surface=asphalt		1
 	switch surface=paved		1
@@ -230,9 +228,9 @@ assign surfaceCostUphill
 	switch mtb:scale=2+	3
 	switch mtb:scale=3	8
 	switch or mtb:scale=4 sac_scale=demanding_mountain_hiking 	100
-	switch or mtb:scale=5 sac_scale=alpine_hiking			400
-	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking	500
-	switch sac_scale=difficult_alpine_hiking				2000
+	switch or mtb:scale=5 sac_scale=alpine_hiking				400
+	switch or mtb:scale=6 sac_scale=demanding_alpine_hiking		500
+	switch sac_scale=difficult_alpine_hiking					2000
 	switch smoothness=impassable	50
 	switch surface=asphalt		1
 	switch surface=paved		1

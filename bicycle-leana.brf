@@ -4,10 +4,10 @@ assign forbidden 1000000
 
 assign validForBikes 1
 
-assign downhillcost 15
-assign downhillcutoff 1.5
-assign uphillcost 15
-assign uphillcutoff 1.5
+assign downhillcost 60
+assign downhillcutoff 1
+assign uphillcost 0
+assign uphillcutoff 1
 
 
 

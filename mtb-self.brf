@@ -149,6 +149,41 @@ assign mtbCost
 	5
 	
 
+assign defaultAccess
+	switch access=
+		not motorroad=yes
+		not or access=private access=no
+
+assign highwayDefaultBicycleNo highway=pedestrian
+assign bicycleExplicitAllowed or bicycle=yes or bicycle=designated vehicle=yes
+assign vehicleExplicitForbidden or vehicle=private vehicle=no
+
+assign vehicleAccess
+	switch vehicle=
+		defaultAccess
+		not vehicleExplicitForbidden
+
+assign bikeAccess
+       or	any_cycleroute
+		switch highwayDefaultBicycleNo
+			bicycleExplicitAllowed
+			vehicleAccess
+
+
+assign footAccess
+	or	bicycle=dismount
+		switch foot=
+			defaultAccess
+			not or foot=private foot=no
+
+assign accessPenalty
+       switch bikeAccess
+              0
+              switch footAccess
+                     6
+                     forbidden
+
+
 assign oneway
 	switch oneway=
 		junction=roundabout
@@ -167,19 +202,19 @@ assign costfactor
 	add	1
 	add	add -1 trafficCost
 	add	add -1 mtbCost
-		onewayPenalty
+		max onewayPenalty accessPenalty
 
 assign downhillcostfactor
 	add	1
 	add	add -1 trafficCostDownhill
 	add	add -1 mtbCost
-		onewayPenalty
+		max onewayPenalty accessPenalty
 
 assign uphillcostfactor
 	add	1
 	add	add -1 trafficCostUphill
 	add	add -1 mtbCost
-		onewayPenalty
+		max onewayPenalty accessPenalty
 
 
 
@@ -229,7 +264,7 @@ assign barrierPenalties
 	0
 
 assign trafficSignalPenalty
-	switch highway=traffic_signals 400 0
+	switch highway=traffic_signals 150 0
 
 assign defaultAccess
        switch access=

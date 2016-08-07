@@ -21,7 +21,7 @@ assign turncost 40
 
 assign initialcost 
 	switch route=ferry	5000
-	switch highway=steps	400
+	switch highway=steps	100
 	0
 
 
@@ -266,9 +266,6 @@ assign defaultAccess
 		not motorroad=yes
 		not or access=private access=no
 
-
-# logical bike access
-#
 assign highwayDefaultBicycleNo or highway=footway or highway=pedestrian highway=bridleway
 assign bicycleExplicitAllowed or bicycle=yes or bicycle=designated vehicle=yes
 assign bicycleExplicitForbidden or bicycle=private or bicycle=no bicycle=dismount 
@@ -287,31 +284,20 @@ assign bikeAccess
 				vehicleAccess
 				not bicycleExplicitForbidden
 
-
-# logical foot access
-#
 assign footAccess
 	or	bicycle=dismount
 		switch foot=
-				defaultAccess
-				not or foot=private foot=no
+			defaultAccess
+			not or foot=private foot=no
 
-# if not bike-, but foot-access, just a moderate penalty,
-# otherwise access is forbidden
-#
 assign accessPenalty
        switch bikeAccess
               0
               switch footAccess
-                     10
+                     6
                      forbidden
 
 
-# handle one-ways. On primary roads, wrong-oneways should
-# be close to forbidden, while on other ways we just add
-# 4 to the costfactor (making it at least 5 - you are allowed
-# to push your bike)
-#
 assign oneway
 	switch oneway=
 		junction=roundabout

@@ -1,5 +1,9 @@
 ---context:global
 
+assign turnInstructionMode 1 #Ausgabe von Abiegehinweise 0=keine, 1=automatische Wahl, 2=locus-Style, 3=osmand-Style
+assign turnInstructionCatchingRange 20 # innerhalb dieser Strecke werden mehrere Abiegehinweise zu einem zusammengefasst und die Abiegewinkel werden besser an die generelle Richtung angenÃ¤hert
+assign turnInstructionRoundabouts true # mit "false" werden keine speziellen Abiegehinweise fÃ¼r den Kreisverkehr generiert 
+
 assign forbidden 1000000
 
 assign validForBikes 1
@@ -21,7 +25,7 @@ assign turncost 40
 
 assign initialcost 
 	switch route=ferry	5000
-	switch highway=steps	100
+	switch highway=steps	300
 	0
 
 
@@ -44,7 +48,7 @@ assign trafficCost
 	switch    highway=track                             1
 	switch    highway=path                              1
 	switch    highway=road                              2
-	switch    highway=steps                             5.67 # seems to be a magic number to make initialcost work
+	switch    highway=steps                             30.67 # seems to be a magic number to make initialcost work
 	switch    route=ferry                               5.67 # see issue 28 on github
 	2
 

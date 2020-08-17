@@ -1,0 +1,444 @@
+#
+# Profile for fast recumbent bikes, contributed by http://www.velomobilforum.de
+
+---context:global
+
+assign totalMass = 100 #Gesamtmasse des Fahrzeugs (Fahrzeug, Fahrer, Gep�ck...) in kg
+assign maxSpeed = 120 #Maximale Geschwindigkeit ab der der Fahrer bremst in km/h
+assign S_C_x = 0.23 #Effektive Stirnfl�che in m�
+assign C_r = 0.004 #Rollwiderstand
+assign bikerPower = 125 #Dauerleistung in Watt
+
+assign ignore_bicycle_no = false # f�r Regionen mit falschen bicyle=no tags k�nnen sie mit "true" ignoriert werden. Auch Shuttletransporte (bicycle=dismount + foot=no) werden geroutet
+assign consider_smoothness_tags = true # mit false kann die kanne die Auswertung der smoothness tags abgeschaltet werden
+assign low_memory_cutoff = false # mit true werden Wege mit hohen Kosten aus der Berechnung genommen und damit wird die Berechnung schneller und ben�tigt weniger Arbeitspeicher.
+
+assign turnInstructionMode 2 #Ausgabe von Abiegehinweise 0=keine, 1=automatische Wahl, 2=locus-Style, 3=osmand-Style
+assign turnInstructionCatchingRange 20 # innerhalb dieser Strecke werden mehrere Abiegehinweise zu einem zusammengefasst und die Abiegewinkel werden besser an die generelle Richtung angen�hert
+assign turnInstructionRoundabouts true # mit "false" werden keine speziellen Abiegehinweise f�r den Kreisverkehr generiert
+
+assign downhillcost 100 # Kosten f�r die H�henmeter bergab
+assign downhillcutoff 1 # Gef�lle unter diesem Wert in Prozent werden nicht gewertet
+assign uphillcost 100 # Kosten f�r die H�henmeter bergauf
+assign uphillcutoff 1 # Steigungen unter diesem Wert in Prozent werden nicht gewertet
+
+assign validForBikes true # bei true werden die Au�nahmen bei den Abbiegebeschr�nkungen f�r Fahrr�der aktiviert
+assign considerTurnRestrictions true # bei false werden die Abbiegebeschr�nkungen ignoriert
+
+assign pass1coefficient 2.5 # Berechnugskoeffizient f�r erste schnelle Berechnung
+assign pass2coefficient 0 # Berechnugskoeffizient f�r zweite exakte Berechnung
+# sinnvolle Werte f�r den ersten Koeffizienten:
+# 1 exakte Berechnung beim ersten Durchlauf
+# umso gr��er die Werte umso schneller und ungenauer die erste Berechnung
+# sinnvolle Werte f�r den zweiten Koeffizienten:
+# 0 exakte Berechnung mit Beschr�nkung des Suchgebiets �ber die Kosten der ersten Berechnung
+# -1 keine zweite Berechnung, nur sinnvoll bei 1 im ersten Durchlauf
+
+# Um die ungenauen SRTM H�hendaten zu filtern werden f�r jeweils f�r Anstiege und Gef�lle Puffer verwendet. Erst wenn diese �berschritten werden die Segmente als Anstiege oder Gef�lle gewertet.
+
+assign elevationpenaltybuffer 7 # H�henpuffer (in Meter) ab dem die H�henstrafen beginnen und das Segment als Anstieg und Gef�lle gewertet wird
+assign elevationmaxbuffer 13 # Maximale Puffergr��e (in Meter), alles dar�berhinausgehende wird voll bestraft
+assign elevationbufferreduce 1 # im Bereich zwischen elevationpenaltybuffer und elevationmaxbuffer wird eine H�henstrafe, die einer Steigung oder Gef�lle dieses Wertes (in Prozent) entspricht, verh�ngt und diese H�henmeter vom Puffer abgezogen.
+
+assign lmc switch low_memory_cutoff 10000 0
+---context:way
+
+# Parameter f�r die Wege
+#zus�tzliche Kosten in Meter f�r jeden Streckenabschnitt
+
+assign any_cycleroute or route_bicycle_icn=yes or route_bicycle_ncn=yes or route_bicycle_rcn=yes route_bicycle_lcn=yes
+assign nodeaccessgranted or any_cycleroute lcn=yes
+
+assign cycleway
+ or bicycle_road=yes or highway=cycleway and highway=path|footway bicycle=designated|yes
+
+assign footway
+ or highway=footway and highway=path foot=designated|yes
+
+assign turncost
+ switch junction=roundabout 60
+ 500 # Kosten die f�r eine 90 Grad Abbiegung berechnet werden. F�r kleinere Winkel werden sie mit turncost*cos(Winkel) berechnet, bei Kreisverkehr keine weitere Kosten
+
+assign initialclassifier # hier wird bestimmten Wegen ein Wert zugeordnet und wenn er sich vom vorherigen unterscheidet die initalcost hinzugerechnet
+ switch route=ferry 2
+ switch highway=steps 3
+ switch cycleway 4
+ switch footway 5
+ 1
+
+assign initialcost
+ switch route=ferry 10000 # Kosten wenn eine F�hre verwendet wird
+ switch highway=steps 10000 # Kosten f�r Stufen
+ switch cycleway 500 # Kosten f�r Radwege
+ switch footway 1000 # Kosten f�r Fu�wege
+ 0
+
+# Kosten ab hier als Meter f�r jeden tats�chlichen Meter
+
+assign oneway
+ switch oneway=
+ junction=roundabout
+ or oneway=yes or oneway=true oneway=1
+
+assign onewaypenalty
+ switch switch reversedirection=yes oneway oneway=-1
+  switch or cycleway=opposite or cycleway=opposite_lane or cycleway=opposite_track oneway:bicycle=no 0 #zus�tzliche Kosten f�r in Gegenrichtung f�r Radfahrer freigegebene Einbahnstra�en in Gegenrichtung
+  switch or highway=primary highway=primary_link add lmc 50 #zus�tzliche Kosten f�r Bundesstra�en Einbahnstra�en in Gegenrichtung
+  switch or highway=secondary highway=secondary_link add lmc 30 #zus�tzliche Kosten f�r Landstra�en Einbahnstra�en in Gegenrichtung
+  switch or highway=tertiary highway=tertiary_link add lmc 25 #zus�tzliche Kosten f�r Kreisstra�en Einbahnstra�en in Gegenrichtung
+  20.0 #zus�tzliche Kosten f�r sonstige Einbahnstra�en in Gegenrichtung
+ 0.0
+
+assign defaultaccess
+ switch access=
+  not motorroad=yes
+ switch or access=private access=no
+  0
+ 1
+
+assign bikeaccess
+ or any_cycleroute
+ switch bicycle=
+  switch bicycle_road=yes
+    1
+    switch vehicle=
+     defaultaccess
+  switch or vehicle=private vehicle=no
+   0
+  1
+ not or bicycle=private or and not ignore_bicycle_no bicycle=no bicycle=dismount
+
+
+assign footaccess
+ or bikeaccess
+ or and bicycle=dismount ignore_bicycle_no
+ switch foot=
+  defaultaccess
+ not or foot=private foot=no
+
+assign accesspenalty
+ switch bikeaccess
+  0
+ switch footaccess
+  10 #Zusatzkosten f�rs Schieben
+ 10000 #Zusatzkosten f�r gesperrte oder private Wege
+
+assign maxspeed_forward
+  switch maxspeed:forward=50 50
+  switch maxspeed:forward=30 30
+  switch maxspeed:forward=10 10
+  switch maxspeed:forward=20 20
+  switch maxspeed:forward=40 40
+  switch maxspeed:forward=60 60
+  switch maxspeed:forward=70 70
+  switch maxspeed:forward=80 80
+  switch maxspeed:forward=90 90
+  switch maxspeed:forward=100 100
+  switch maxspeed:forward=110 110
+  switch maxspeed:forward=120 120
+  switch maxspeed:forward=130 130
+  switch maxspeed:forward=urban 50
+  switch maxspeed:forward=rural 100
+  0
+
+assign maxspeed_backward
+  switch maxspeed:backward=50 50
+  switch maxspeed:backward=30 30
+  switch maxspeed:backward=10 10
+  switch maxspeed:backward=20 20
+  switch maxspeed:backward=40 40
+  switch maxspeed:backward=60 60
+  switch maxspeed:backward=70 70
+  switch maxspeed:backward=80 80
+  switch maxspeed:backward=90 90
+  switch maxspeed:backward=100 100
+  switch maxspeed:backward=110 110
+  switch maxspeed:backward=120 120
+  switch maxspeed:backward=130 130
+  switch maxspeed:backward=urban 50
+  switch maxspeed:backward=rural 100
+  0
+
+assign maxspeed
+  switch and reversedirection=yes maxspeed_backward maxspeed_backward
+  switch and not reversedirection=yes maxspeed_forward maxspeed_forward
+  switch maxspeed=50 50
+  switch maxspeed=30 30
+  switch maxspeed=10 10
+  switch maxspeed=20 20
+  switch maxspeed=40 40
+  switch maxspeed=60 60
+  switch maxspeed=70 70
+  switch maxspeed=80 80
+  switch maxspeed=90 90
+  switch maxspeed=100 100
+  switch maxspeed=110 110
+  switch maxspeed=120 120
+  switch maxspeed=130 130
+  switch maxspeed=urban 50
+  switch maxspeed=rural 100
+  999
+
+
+assign downspeedpenalty
+ switch equal maxspeed 10 50 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 10 km/h bei Gef�lle
+ switch equal maxspeed 20 20 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 20 km/h bei Gef�lle
+ switch equal maxspeed 30 5 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 30 km/h bei Gef�lle
+ switch equal maxspeed 40 0.4 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 40 km/h bei Gef�lle
+ switch equal maxspeed 50 0.2 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 50 km/h bei Gef�lle
+ 0
+
+assign flatspeedpenalty
+ switch equal maxspeed 10 4 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 10 km/h in der Ebene
+ switch equal maxspeed 20 0.5 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 20 km/h in der Ebene
+ switch equal maxspeed 30 0.15 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 30 km/h in der Ebene
+ switch equal maxspeed 40 0.05 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 40 km/h bei Gef�lle
+ switch equal maxspeed 50 0 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 50 km/h in der Ebene
+ 0
+
+assign upspeedpenalty
+ switch equal maxspeed 10 1.2 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 10 km/h bei Anstiegen
+ switch equal maxspeed 20 0 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 20 km/h bei Anstiegen
+ switch equal maxspeed 30 0 # Zusatzkosten f�r Geschwindigkeitsbegrenzung 30 km/h bei Anstiegen
+ 0
+
+
+assign surfacepenalty
+ add switch embedded_rails=tram|yes|rail 10 # Zusatzkosten bei Schienen in der Fahrbahn
+ 0
+ switch surface=asphalt|paved 0 #Zusatzkosten f�r Teer oder versiegelte Fl�chen
+ switch concrete=plates 1 # Zusatzkosten f�r Betonplattenwege
+ switch concrete=lanes  2 # Zusatzkosten f�r Betonspurplatten
+ switch surface=concrete|paving_stones|wood|metal 0.4 #Zusatzkosten f�r Beton, Pflastersteine, Holz oder Metall
+ switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 4 #Zusatzkosten f�r Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
+ switch surface=gravel|sand|pebblestone add lmc 10 #Zusatzkosten f�r Schotter, Sand oder Kies
+ switch surface=ground|grass|unpaved|dirt|earth|mud|clay add lmc 50 #Zusatzkosten f�r naturbelassene Wege, Grasswege, unbefestigte Wege, Schmutzwege, erdige Wege, schlammige Wege oder Lehmwege
+ 0
+
+assign smoothnesspenalty
+ switch smoothness=excellent|good|very_good 0 #Zusatzkosten f�r excellente, gute, oder sehr gute Oberfl�chen
+ switch smoothness=intermediate|medium 0.2 #Zusatzkosten f�r mittelm��ige Oberfl�chen
+ switch smoothness=rough|poor 2 #Zusatzkosten f�r raue oder schlechte Oberfl�chen
+ switch smoothness=robust_wheels|bad add lmc 10 #Zusatzkosten f�r Oberfl�chen die robuste Reifen ben�tigen oder schlechte Oberfl�chen
+ switch smoothness=high_clearance|off_road_wheels|very_bad|horrible|very_horrible|impassable add lmc 100 #Zusatzkosten f�r Oberfl�chen die eine erh�hte Bodenfreiheit oder Gel�ndebereifung ben�tigen, schrecklich, sehr schrecklich oder unpasierbar sind
+ 0
+
+
+assign costfactor
+
+# dieser Abschnitt ist f�r die Kosten in der Ebene
+
+ switch and highway= not route=ferry 10000 # Kosten f�r alles ohne higway tag au�er F�hren
+ switch or highway=proposed highway=abandoned 10000 # Kosten f�r geplante oder Wege im Bau
+
+ min 9999
+
+ add onewaypenalty
+ add accesspenalty
+ add surfacepenalty
+ add switch consider_smoothness_tags smoothnesspenalty 0
+ add flatspeedpenalty
+
+ switch highway=motorway|motorway_link 10000 # Kosten f�r Autobahnen
+ switch route=ferry 10.67 # Kosten f�r F�hren
+ switch highway=trunk|trunk_link 5 # Kosten f�r eine autobahn�nliche Stra�e
+ switch highway=primary|primary_link 1.5 # Kosten f�r Bundesstra�en
+ switch highway=secondary|secondary_link 1 # Kosten f�r Landstra�en
+ switch highway=tertiary|tertiary_link 1 # Kosten f�r Kreisstra�en
+ switch highway=unclassified 1 # Kosten f�r Verbindungsstra�en
+ switch highway=residential|service 2 # Kosten f�r Wohn- und Zufahrtsstra�en
+ switch highway=track
+  switch tracktype=grade1 1.2 # Kosten f�r geteerte, betonierte oder gepflasterte Feldwege
+  switch tracktype=grade2 7 # Kosten f�r geschotterte Feldwege
+  switch tracktype=grade3 add lmc 40 # Kosten f�r Feldwege mit weichem Untergrund
+  switch tracktype=grade4 add lmc 50 # Kosten f�r unbefestigte Feldwege
+  switch tracktype=grade5 add lmc 50 # Kosten f�r kaum erkennbare Feldwege
+  add lmc 20 # Kosten f�r Feldwege ohne Oberfl�chenangabe
+ switch cycleway 3 # Kosten f�r Fahrradwege
+ switch ( or highway=living_street living_street=yes ) 4 # Kosten f�r Spielstra�en
+ switch highway=road 7 # Kosten f�r noch nicht genauer beschriebene Stra�e
+ switch footway 15 # Kosten f�r Fu�wege
+ switch highway=pedestrian 20 # Kosten f�r Gehwege
+ switch highway=steps 30 # Kosten f�r Stufen
+ switch highway=path
+  switch surface= add lmc 40 # Kosten f�r Pfade ohne Oberfl�chenangabe
+  1.3 # Kosten f�r Pfade mit Oberfl�chenangabe
+ switch highway=bridleway add lmc 80 # Kosten f�r Reitwege
+ add lmc 20 # Kosten f�r sonstige Wege
+
+assign uphillcostfactor
+
+# dieser Abschnitt ist f�r die Kosten bei Anstiegen
+# da er von der Struktur identisch wie der vorherige Abschnitt werde ich die Beschreibung hier nicht wiederholen
+
+ switch and highway= not route=ferry 10000
+ switch or highway=proposed highway=abandoned 10000
+
+ min 9999
+
+ add upspeedpenalty
+ add onewaypenalty
+ add accesspenalty
+ add switch consider_smoothness_tags smoothnesspenalty 0
+ add surfacepenalty
+
+ switch highway=motorway|motorway_link 10000
+ switch route=ferry 10.67
+ switch highway=trunk|trunk_link 7
+ switch highway=primary|primary_link 3
+ switch highway=secondary|secondary_link 1.2
+ switch highway=tertiary|tertiary_link 1
+ switch highway=unclassified 1
+ switch highway=residential|service 1.4
+ switch highway=track
+  switch tracktype=grade1 1
+  switch tracktype=grade2 3
+  switch tracktype=grade3 add lmc 40
+  switch tracktype=grade4 add lmc 50
+  switch tracktype=grade5 add lmc 50
+  add lmc 20
+ switch cycleway 1.5
+ switch ( or highway=living_street living_street=yes ) 2.5
+ switch highway=road 5
+ switch footway 15
+ switch highway=pedestrian 20
+ switch highway=steps 30
+ switch highway=path
+  switch surface= add lmc 30
+  1
+ switch highway=bridleway add lmc 80
+ add lmc 20
+
+assign downhillcostfactor
+
+# dieser Abschnitt ist f�r die Kosten bei Gef�lle
+# da er von der Struktur identisch wie der vorvorherige Abschnitt werde ich die Beschreibung hier auch nicht wiederholen
+
+ switch and highway= not route=ferry 10000
+ switch or highway=proposed highway=abandoned 10000
+
+ min 9999
+
+ add downspeedpenalty
+ add onewaypenalty
+ add accesspenalty
+ add switch consider_smoothness_tags smoothnesspenalty 0
+ add surfacepenalty
+
+ switch highway=motorway|motorway_link 10000
+ switch route=ferry 10.67
+ switch highway=trunk|trunk_link 3
+ switch highway=primary|primary_link 1
+ switch highway=secondary|secondary_link 1
+ switch highway=tertiary|tertiary_link 1
+ switch highway=unclassified 1.2
+ switch highway=residential|service 4
+ switch highway=track
+  switch tracktype=grade1 2
+  switch tracktype=grade2 8
+  switch tracktype=grade3 add lmc 40
+  switch tracktype=grade4 add lmc 50
+  switch tracktype=grade5 add lmc 50
+  add lmc 20
+ switch cycleway 10
+ switch ( or highway=living_street living_street=yes ) 8
+ switch highway=road 10
+ switch footway 20
+ switch highway=pedestrian 30
+ switch highway=steps 40
+ switch highway=path
+  switch surface= add lmc 40
+  2
+ switch highway=bridleway add lmc 80
+ add lmc 20
+
+
+# hier kommen Variablen die zur Generierung der Abiegehinweise ben�tigt werden
+
+assign priorityclassifier =
+
+ if   ( highway=motorway                                          ) then 30
+ else if ( highway=motorway_link                                  ) then 29
+ else if ( highway=trunk                                          ) then 28
+ else if ( highway=trunk_link                                     ) then 27
+ else if ( highway=primary                                        ) then 26
+ else if ( highway=primary_link                                   ) then 25
+ else if ( highway=secondary                                      ) then 24
+ else if ( highway=secondary_link                                 ) then 23
+ else if ( highway=tertiary                                       ) then 22
+ else if ( highway=tertiary_link                                  ) then 21
+ else if ( highway=unclassified                                   ) then 20
+ else if ( or highway=residential|living_street living_street=yes ) then 6
+ else if ( highway=service                                        ) then 6
+ else if ( highway=cycleway                                       ) then 6
+ else if ( or bicycle=designated bicycle_road=yes                 ) then 6
+ else if ( highway=track                                          ) then if tracktype=grade1 then 6 else 4
+ else if ( highway=bridleway|road|path|footway                    ) then 4
+ else if ( highway=steps                                          ) then 2
+ else if ( highway=pedestrian                                     ) then 2
+ else 0
+
+
+
+assign isbadoneway = not equal onewaypenalty 0
+assign isgoodoneway = if reversedirection=yes then oneway=-1
+           else if oneway= then junction=roundabout else oneway=yes|true|1
+assign isroundabout = junction=roundabout
+assign islinktype = highway=motorway_link|trunk_link|primary_link|secondary_link|tertiary_link
+assign isgoodforcars = if greater priorityclassifier 6 then true
+         else if ( or highway=residential|living_street|service living_street=yes ) then true
+         else if ( and highway=track tracktype=grade1 ) then true
+         else false
+
+assign classifiermask add     isbadoneway
+           add multiply isgoodoneway  2
+           add multiply isroundabout  4
+           add multiply islinktype   8
+             multiply isgoodforcars 16
+
+
+
+---context:node # following code refers to node tags
+
+# Parameter f�r Knotenpunkte
+# Kosten an Knotenpunkten in Meter
+
+
+assign defaultaccess
+ switch access=
+  1 # add default barrier restrictions here!
+ switch or access=private access=no
+  0
+ 1
+
+assign bikeaccess
+ or nodeaccessgranted=yes
+ switch bicycle=
+  switch vehicle=
+   defaultaccess
+  switch or vehicle=private vehicle=no
+   0
+  1
+ switch or bicycle=private or and not or highway=crossing ignore_bicycle_no bicycle=no bicycle=dismount
+  0
+ 1
+
+assign footaccess
+ or bicycle=dismount
+ switch foot=
+  defaultaccess
+ switch or foot=private foot=no
+  0
+ 1
+
+assign initialcost
+ add switch highway=traffic_signals 400 # Kosten f�r Ampel
+  switch highway=stop 400 # Kosten f�r Stoppschild
+  switch railway=crossing|level_crossing 50 # Kosten f�r Bahn�bergang
+  0
+ switch bikeaccess
+  0
+ switch footaccess
+  10000 # Kosten f�rs Absteigen
+ 1000000 #Kosten f�r verbotene oder private Wege
+

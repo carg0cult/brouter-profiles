@@ -9,7 +9,7 @@ assign   allow_ferries        = true   # set to false to disallow ferries
 assign   ignore_cycleroutes   = true   # set to true for better elevation results
 assign   stick_to_cycleroutes = false   # set to true to just follow cycleroutes
 assign   avoid_unsafe         = false   # set to true to avoid standard highways
-assign   turnInstructionMode  = 1  # 0=none, 1=auto-choose, 2=locus-style, 3=osmand-style
+assign   turnInstructionMode  = 2  # 0=none, 1=auto-choose, 2=locus-style, 3=osmand-style
 
 assign   validForBikes        = true
 

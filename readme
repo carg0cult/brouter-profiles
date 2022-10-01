@@ -1,3 +1,4 @@
-On Smartphone for use in Locus Maps, copy profile to Internal Storage/Locus/router/profiles2/
-Then in Locus Maps: Settings - Navigation - Router: Locus profiles, assign name
+On Smartphone for use in Locus Maps, copy profile to Internal Storage/Android/data/menion.android.locus.pro/files/Locus/router/profiles2/
+(accessible by USB, not by file manager on device)
+Then in Locus Maps: Settings - Navigation - Router: Routing profile, EXTERNAL PROFILES
 

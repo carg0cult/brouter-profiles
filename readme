@@ -1,4 +1,4 @@
 On Smartphone for use in Locus Maps, copy profile to Internal Storage/Android/data/menion.android.locus.pro/files/Locus/router/profiles2/
-(accessible by USB or File Manager+, not by regular file manager on device)
+(accessible on Android 13 only FV File Explorer, not by regular file manager on device)
 Then in Locus Maps: Settings - Navigation - Router: Routing profile, EXTERNAL PROFILES
 

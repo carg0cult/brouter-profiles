@@ -65,7 +65,7 @@ assign footway
 
 assign turncost 
  switch junction=roundabout 100
- 300 # Kosten die für eine 90 Grad Abbiegung berechnet werden. Für kleinere Winkel werden sie mit turncost*cos(Winkel) berechnet, bei Kreisverkehr keine weitere Kosten
+ 400 # Kosten die für eine 90 Grad Abbiegung berechnet werden. Für kleinere Winkel werden sie mit turncost*cos(Winkel) berechnet, bei Kreisverkehr keine weitere Kosten
 
 assign initialclassifier # hier wird bestimmten Wegen ein Wert zugeordnet und wenn er sich vom vorherigen unterscheidet die initalcost hinzugerechnet
  switch route=ferry 2

@@ -211,22 +211,49 @@ assign upspeedpenalty
 
 
 assign surfacepenalty
- add switch embedded_rails=tram|yes|rail 10 # Zusatzkosten bei Schienen in der Fahrbahn
+ add switch embedded_rails=tram|yes|rail 2 # Zusatzkosten bei Schienen in der Fahrbahn
  0
  switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
  switch concrete=plates 1 # Zusatzkosten für Betonplattenwege
  switch concrete=lanes  2 # Zusatzkosten für Betonspurplatten
  switch surface=concrete|paving_stones|wood|metal 0.5 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
- switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 5 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
- switch surface=gravel|sand|pebblestone 50 #Zusatzkosten für Schotter, Sand oder Kies
- switch surface=ground|grass|unpaved|dirt|earth|mud|clay 50 #Zusatzkosten für naturbelassene Wege, Grasswege, unbefestigte Wege, Schmutzwege, erdige Wege, schlammige Wege oder Lehmwege
+ switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 3 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
+ switch surface=gravel|pebblestone 10
+ switch surface=ground|grass|unpaved|dirt|earth|clay 10
+ switch surface=mud|sand 100
+ 0
+
+assign uphillsurfacepenalty
+ add switch embedded_rails=tram|yes|rail 1 # Zusatzkosten bei Schienen in der Fahrbahn
+ 0
+ switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
+ switch concrete=plates 0 # Zusatzkosten für Betonplattenwege
+ switch concrete=lanes  0.5 # Zusatzkosten für Betonspurplatten
+ switch surface=concrete|paving_stones|wood|metal 0.1 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
+ switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 2 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
+ switch surface=gravel|pebblestone 3
+ switch surface=ground|grass|unpaved|dirt|earth|clay 3
+ switch surface=mud|sand 100
+ 0
+
+assign downhillsurfacepenalty
+ add switch embedded_rails=tram|yes|rail 20 # Zusatzkosten bei Schienen in der Fahrbahn
+ 0
+ switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
+ switch concrete=plates 3 # Zusatzkosten für Betonplattenwege
+ switch concrete=lanes  10 # Zusatzkosten für Betonspurplatten
+ switch surface=concrete|paving_stones|wood|metal 2 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
+ switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 50 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
+ switch surface=gravel|pebblestone 50
+ switch surface=ground|grass|unpaved|dirt|earth|clay 20
+ switch surface=mud|sand 5000
  0
 
 assign smoothnesspenalty
  switch smoothness=excellent|very_good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
  switch smoothness=good 0.05 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
- switch smoothness=intermediate|medium 0.7 #Zusatzkosten für mittelmäßige Oberflächen
- switch smoothness=bad 3 #Zusatzkosten für raue oder schlechte Oberflächen
+ switch smoothness=intermediate|medium 1 #Zusatzkosten für mittelmäßige Oberflächen
+ switch smoothness=bad 4 #Zusatzkosten für raue oder schlechte Oberflächen
  switch smoothness=very_bad 40 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
  switch smoothness=horrible|very_horrible|impassable 100 #Zusatzkosten für Oberflächen die eine erhöhte Bodenfreiheit oder Geländebereifung benötigen, schrecklich, sehr schrecklich oder unpasierbar sind
  0
@@ -235,7 +262,7 @@ assign uphillsmoothnesspenalty
  switch smoothness=excellent|very_good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
  switch smoothness=good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
  switch smoothness=intermediate|medium 0.1 #Zusatzkosten für mittelmäßige Oberflächen
- switch smoothness=bad 1 #Zusatzkosten für raue oder schlechte Oberflächen
+ switch smoothness=bad 3 #Zusatzkosten für raue oder schlechte Oberflächen
  switch smoothness=very_bad 10 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
  switch smoothness=horrible|very_horrible|impassable 100 #Zusatzkosten für Oberflächen die eine erhöhte Bodenfreiheit oder Geländebereifung benötigen, schrecklich, sehr schrecklich oder unpasierbar sind
  0
@@ -243,8 +270,8 @@ assign uphillsmoothnesspenalty
 assign downhillsmoothnesspenalty
  switch smoothness=excellent|very_good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
  switch smoothness=good 0.1 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
- switch smoothness=intermediate|medium 2 #Zusatzkosten für mittelmäßige Oberflächen
- switch smoothness=bad 7 #Zusatzkosten für raue oder schlechte Oberflächen
+ switch smoothness=intermediate|medium 4 #Zusatzkosten für mittelmäßige Oberflächen
+ switch smoothness=bad 10 #Zusatzkosten für raue oder schlechte Oberflächen
  switch smoothness=very_bad 100 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
  switch smoothness=horrible|very_horrible|impassable 1000 #Zusatzkosten für Oberflächen die eine erhöhte Bodenfreiheit oder Geländebereifung benötigen, schrecklich, sehr schrecklich oder unpasierbar sind
  0
@@ -277,7 +304,7 @@ assign costfactor
  switch highway=service 1 # Kosten für Wohn- und Zufahrtsstraßen
  switch highway=track
   switch tracktype=grade1 1 # Kosten für geteerte, betonierte oder gepflasterte Feldwege
-  switch tracktype=grade2 4 # Kosten für geschotterte Feldwege
+  switch tracktype=grade2 10 # Kosten für geschotterte Feldwege
   switch tracktype=grade3 20 # Kosten für Feldwege mit weichem Untergrund
   switch tracktype=grade4 30 # Kosten für unbefestigte Feldwege
   switch tracktype=grade5 50 # Kosten für kaum erkennbare Feldwege
@@ -294,6 +321,7 @@ assign costfactor
  switch highway=bridleway 2 # Kosten für Reitwege
  20 # Kosten für sonstige Wege
 
+
 assign uphillcostfactor
 
 # dieser Abschnitt ist für die Kosten bei Anstiegen
@@ -307,7 +335,7 @@ assign uphillcostfactor
 
  add onewaypenalty
  add accesspenalty
- add max uphillsmoothnesspenalty surfacepenalty
+ add max uphillsmoothnesspenalty uphillsurfacepenalty
  add upspeedpenalty
  max 1
  switch highway=motorway|motorway_link 10000
@@ -320,7 +348,7 @@ assign uphillcostfactor
  switch highway=residential|service 1
  switch highway=track
   switch tracktype=grade1 1
-  switch tracktype=grade2 2
+  switch tracktype=grade2 5
   switch tracktype=grade3 10
   switch tracktype=grade4 20
   switch tracktype=grade5 30
@@ -337,6 +365,7 @@ assign uphillcostfactor
  switch highway=bridleway 1.5
  20
 
+
 assign downhillcostfactor
 
 # dieser Abschnitt ist für die Kosten bei Gefälle
@@ -351,7 +380,7 @@ assign downhillcostfactor
  add downspeedpenalty
  add onewaypenalty
  add accesspenalty
- add max downhillsmoothnesspenalty surfacepenalty
+ add max downhillsmoothnesspenalty downhillsurfacepenalty
  max 1
  switch highway=motorway|motorway_link 10000
  switch route=ferry 10.67
@@ -364,7 +393,7 @@ assign downhillcostfactor
  switch highway=service 1
  switch highway=track
   switch tracktype=grade1 1.7
-  switch tracktype=grade2 20
+  switch tracktype=grade2 25
   switch tracktype=grade3 40
   switch tracktype=grade4 60
   switch tracktype=grade5 80

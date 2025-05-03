@@ -298,7 +298,7 @@ assign costfactor
  switch highway=trunk|trunk_link 4 # Kosten für eine autobahnänliche Straße
  switch highway=primary|primary_link 3   # Kosten für Bundesstraßen
  switch highway=secondary|secondary_link 1.4 # Kosten für Landstraßen
- switch highway=tertiary|tertiary_link 1 # Kosten für Kreisstraßen
+ switch highway=tertiary|tertiary_link 1.1 # Kosten für Kreisstraßen
  switch highway=unclassified 1 # Kosten für Verbindungsstraßen
  switch highway=residential 1.2 # Kosten für Wohn- und Zufahrtsstraßen
  switch highway=service 1 # Kosten für Wohn- und Zufahrtsstraßen
@@ -343,7 +343,7 @@ assign uphillcostfactor
  switch highway=trunk|trunk_link 10
  switch highway=primary|primary_link 7
  switch highway=secondary|secondary_link 2
- switch highway=tertiary|tertiary_link 1.1
+ switch highway=tertiary|tertiary_link 1.3
  switch highway=unclassified 1
  switch highway=residential|service 1
  switch highway=track

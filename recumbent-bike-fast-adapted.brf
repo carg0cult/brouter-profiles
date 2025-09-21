@@ -21,7 +21,7 @@ assign ignore_bicycle_no = false # %ignore_bicycle_no% | für Regionen mit falsc
 
 
 assign turnInstructionMode          = 2     # %turnInstructionMode% | Modus für die Abbiegehinweise | [0=keine, 1=automatische Wahl, 2=locus-Style, 3=osmand-Style, 4=comment-Style, 5=gpsies-Style, 6=orux-Style]
-assign turnInstructionCatchingRange 15 # innerhalb dieser Strecke werden mehrere Abiegehinweise zu einem zusammengefasst und die Abiegewinkel werden besser an die generelle Richtung angenähert
+assign turnInstructionCatchingRange 30 # innerhalb dieser Strecke werden mehrere Abiegehinweise zu einem zusammengefasst und die Abiegewinkel werden besser an die generelle Richtung angenähert
 assign turnInstructionRoundabouts true # mit "false" werden keine speziellen Abiegehinweise für den Kreisverkehr generiert 
 
 assign avoid_ele multiply avoid_elevation 0.2
@@ -250,17 +250,17 @@ assign downhillsurfacepenalty
  0
 
 assign smoothnesspenalty
- switch smoothness=excellent|very_good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
- switch smoothness=good 0.05 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
+ switch smoothness=excellent|very_good 0
+ switch smoothness=good 0.05
  switch smoothness=intermediate|medium 1 #Zusatzkosten für mittelmäßige Oberflächen
- switch smoothness=bad 4 #Zusatzkosten für raue oder schlechte Oberflächen
+ switch smoothness=bad 8 #Zusatzkosten für raue oder schlechte Oberflächen
  switch smoothness=very_bad 40 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
  switch smoothness=horrible|very_horrible|impassable 100 #Zusatzkosten für Oberflächen die eine erhöhte Bodenfreiheit oder Geländebereifung benötigen, schrecklich, sehr schrecklich oder unpasierbar sind
  0
 
 assign uphillsmoothnesspenalty
- switch smoothness=excellent|very_good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
- switch smoothness=good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
+ switch smoothness=excellent|very_good 0
+ switch smoothness=good 0
  switch smoothness=intermediate|medium 0.1 #Zusatzkosten für mittelmäßige Oberflächen
  switch smoothness=bad 3 #Zusatzkosten für raue oder schlechte Oberflächen
  switch smoothness=very_bad 10 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
@@ -268,10 +268,10 @@ assign uphillsmoothnesspenalty
  0
 
 assign downhillsmoothnesspenalty
- switch smoothness=excellent|very_good 0 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
- switch smoothness=good 0.1 #Zusatzkosten für excellente, gute, oder sehr gute Oberflächen
+ switch smoothness=excellent|very_good 0
+ switch smoothness=good 0.1
  switch smoothness=intermediate|medium 4 #Zusatzkosten für mittelmäßige Oberflächen
- switch smoothness=bad 10 #Zusatzkosten für raue oder schlechte Oberflächen
+ switch smoothness=bad 20 #Zusatzkosten für raue oder schlechte Oberflächen
  switch smoothness=very_bad 100 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
  switch smoothness=horrible|very_horrible|impassable 1000 #Zusatzkosten für Oberflächen die eine erhöhte Bodenfreiheit oder Geländebereifung benötigen, schrecklich, sehr schrecklich oder unpasierbar sind
  0

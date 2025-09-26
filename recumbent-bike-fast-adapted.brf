@@ -458,8 +458,56 @@ assign classifiermask add     isbadoneway
 
 ---context:node # following code refers to node tags
 
-# Parameter für Knotenpunkte
-# Kosten an Knotenpunkten in Meter
+assign barrier_cost
+	switch barrier=gate				1000
+	switch barrier=lift_gate			100
+	switch barrier=stile				2000
+	switch barrier=cycle_barrier			500
+	switch barrier=cattle_grid			200
+	switch barrier=kissing_gate			1000
+	switch barrier=turnstile			1000
+	switch barrier=fence				10000
+	switch barrier=border_control			1000
+	switch barrier=sally_port			500
+	switch barrier=chain				1000
+	switch barrier=door				1000
+	switch barrier=swing_gate			500
+	switch barrier=bump_gate			1000
+	switch barrier=hampshire_gate			1000
+	switch barrier=wall				10000
+	switch barrier=ditch				10000
+	switch barrier=debris				2000
+	switch barrier=log				1000
+	#switch barrier=chicane				
+	switch barrier=kerb				500
+	switch barrier=sump_buster			50
+	#switch barrier=obstacle			100
+	switch barrier=horse_stile			1000
+	switch barrier=full-height_turnstile		10000
+	#switch barrier=windfall			100
+	switch barrier=spikes				1000
+	#switch barrier=checkpoint			100
+	switch barrier=hedge				10000
+	#switch barrier=footgate			100
+	switch barrier=tree				1000
+	switch barrier=guard_rail			1000
+	#switch barrier=bar				100
+	#switch barrier=fallen_tree			100
+	#switch barrier=jersey_barrier			100
+	#switch barrier=motorcycle_barrier		100
+	#switch barrier=rope				100
+	#switch barrier=stone				100
+	#switch barrier=traffic_crossing_pole		100
+	0
+
+assign stop_cost
+	switch highway=traffic_signals 400
+	switch highway=stop 400 # stop sign
+	switch railway=crossing|level_crossing 400
+	0
+
+assign slow_cost
+	add barrier_cost stop_cost
 
 
 assign defaultaccess
@@ -489,14 +537,10 @@ assign footaccess
   0
  1
 
+assign node_access_cost
+	switch bikeaccess 0 
+	switch footaccess dismount_cost
+	1000000
+
 assign initialcost
- add switch highway=traffic_signals 400 # Kosten für Ampel
-  switch highway=stop 400 # Kosten für Stoppschild
-  switch railway=crossing|level_crossing 200 # Kosten für Bahnübergang
-  switch highway=steps switch no_steps 1000000 dismount_cost #Kosten für Stufe
-  0
- switch bikeaccess
-  0 
- switch footaccess
-  dismount_cost # Kosten fürs Aussteigen
- 1000000 #Kosten für verbotene oder private Wege
+	add slow_cost node_access_cost

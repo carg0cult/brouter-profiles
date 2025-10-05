@@ -1,6 +1,3 @@
-#
-# Profile for fast recumbent bikes, contributed by http://www.velomobilforum.de
-
 ---context:global
 
 assign no_steps = false # %no_steps% | keine Stufen, das Liegerad soll nicht getragen werden müssen | boolean
@@ -48,6 +45,8 @@ assign pass2coefficient 0 # Berechnugskoeffizient für zweite exakte Berechnung
 assign elevationpenaltybuffer 7 # Höhenpuffer (in Meter) ab dem die Höhenstrafen beginnen und das Segment als Anstieg und Gefälle gewertet wird
 assign elevationmaxbuffer 13 # Maximale Puffergröße (in Meter), alles darüberhinausgehende wird voll bestraft
 assign elevationbufferreduce 1 # im Bereich zwischen elevationpenaltybuffer und elevationmaxbuffer wird eine Höhenstrafe, die einer Steigung oder Gefälle dieses Wertes (in Prozent) entspricht, verhängt und diese Höhenmeter vom Puffer abgezogen.
+
+
 
 ---context:way
 
@@ -459,6 +458,7 @@ assign classifiermask add     isbadoneway
 assign way_is_reverse 
 	switch reversedirection=yes true
 	false
+
 
 
 ---context:node # following code refers to node tags

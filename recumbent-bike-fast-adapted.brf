@@ -274,6 +274,19 @@ assign downhillsmoothnesspenalty
  switch smoothness=very_bad 100 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
  switch smoothness=horrible|very_horrible|impassable 1000 #Zusatzkosten für Oberflächen die eine erhöhte Bodenfreiheit oder Geländebereifung benötigen, schrecklich, sehr schrecklich oder unpasierbar sind
  0
+ 
+ # use smoothness if present, otherwise use surface
+ assign smoothness_or_surface_cost
+ 	switch not smoothness= smoothnesspenalty
+ 	surfacepenalty
+ 
+ assign uphill_smoothness_or_surface_cost
+ 	switch not smoothness= uphillsmoothnesspenalty
+ 	uphillsurfacepenalty
+
+ assign downhill_smoothness_or_surface_cost
+ 	switch not smoothness= downhillsmoothnesspenalty
+ 	downhillsurfacepenalty
 
 
 assign costfactor
@@ -288,7 +301,7 @@ assign costfactor
 
  add onewaypenalty
  add accesspenalty
- add max smoothnesspenalty surfacepenalty
+ add smoothness_or_surface_cost
  add flatspeedpenalty
 
  max 1
@@ -334,7 +347,7 @@ assign uphillcostfactor
 
  add onewaypenalty
  add accesspenalty
- add max uphillsmoothnesspenalty uphillsurfacepenalty
+ add uphill_smoothness_or_surface_cost
  add upspeedpenalty
  max 1
  switch highway=motorway|motorway_link 10000
@@ -379,7 +392,7 @@ assign downhillcostfactor
  add downspeedpenalty
  add onewaypenalty
  add accesspenalty
- add max downhillsmoothnesspenalty downhillsurfacepenalty
+ add downhill_smoothness_or_surface_cost
  max 1
  switch highway=motorway|motorway_link 10000
  switch route=ferry 10.67

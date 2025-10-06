@@ -274,19 +274,29 @@ assign downhillsmoothnesspenalty
  switch smoothness=very_bad 100 #Zusatzkosten für Oberflächen die robuste Reifen benötigen oder schlechte Oberflächen
  switch smoothness=horrible|very_horrible|impassable 1000 #Zusatzkosten für Oberflächen die eine erhöhte Bodenfreiheit oder Geländebereifung benötigen, schrecklich, sehr schrecklich oder unpasierbar sind
  0
- 
- # use smoothness if present, otherwise use surface
- assign smoothness_or_surface_cost
- 	switch not smoothness= smoothnesspenalty
- 	surfacepenalty
- 
- assign uphill_smoothness_or_surface_cost
- 	switch not smoothness= uphillsmoothnesspenalty
- 	uphillsurfacepenalty
 
- assign downhill_smoothness_or_surface_cost
- 	switch not smoothness= downhillsmoothnesspenalty
- 	downhillsurfacepenalty
+assign mtb_scale_cost
+	switch mtb:scale=0	0
+	switch mtb:scale=0+	20
+	switch mtb:scale=1	50 # can be steep
+	switch not mtb:scale=	9999 # all other mtb:scale
+	0
+
+# use smoothness if present, otherwise use surface
+assign smoothness_or_surface_cost
+	switch mtb_scale_cost	mtb_scale_cost
+	switch not smoothness=	smoothnesspenalty
+	surfacepenalty
+
+assign uphill_smoothness_or_surface_cost
+	switch mtb_scale_cost	mtb_scale_cost
+	switch not smoothness=	uphillsmoothnesspenalty
+	uphillsurfacepenalty
+
+assign downhill_smoothness_or_surface_cost
+	switch mtb_scale_cost	mtb_scale_cost
+	switch not smoothness=	downhillsmoothnesspenalty
+	downhillsurfacepenalty
 
 
 assign costfactor

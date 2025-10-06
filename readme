@@ -2,3 +2,4 @@ On Smartphone for use in Locus Maps, copy profile to Internal Storage/Android/da
 (accessible on Android 13 only FV File Explorer, not by regular file manager on device)
 Then in Locus Maps: Settings - Navigation - Router: Routing profile, EXTERNAL PROFILES
 
+on Android 15 copy works only by starting Shizuku, then copy with Solid Explorer

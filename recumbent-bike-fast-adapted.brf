@@ -210,43 +210,64 @@ assign upspeedpenalty
 
 
 assign surfacepenalty
- add switch embedded_rails=tram|yes|rail 2 # Zusatzkosten bei Schienen in der Fahrbahn
- 0
- switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
- switch concrete=plates 1 # Zusatzkosten für Betonplattenwege
- switch concrete=lanes  2 # Zusatzkosten für Betonspurplatten
- switch surface=concrete|paving_stones|wood|metal 0.5 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
- switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 3 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
- switch surface=gravel|pebblestone 10
- switch surface=ground|grass|unpaved|dirt|earth|clay 10
- switch surface=mud|sand 100
- 0
+	add 
+		switch embedded_rails=tram|yes|rail 2 # Zusatzkosten bei Schienen in der Fahrbahn
+		0
+		
+		switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
+		switch concrete=plates 1 # Zusatzkosten für Betonplattenwege
+		switch concrete=lanes  2 # Zusatzkosten für Betonspurplatten
+		switch surface=concrete|paving_stones|wood|metal 0.5 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
+		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 6 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
+		switch surface=gravel|pebblestone 10
+		switch surface=ground|grass|unpaved|dirt|earth|clay 10
+		switch surface=mud|sand 100
+		switch tracktype=grade1	0
+		switch tracktype=grade2	8
+		switch tracktype=grade3	20
+		switch tracktype=grade4	30
+		switch tracktype=grade5	50
+		0
 
 assign uphillsurfacepenalty
- add switch embedded_rails=tram|yes|rail 1 # Zusatzkosten bei Schienen in der Fahrbahn
- 0
- switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
- switch concrete=plates 0 # Zusatzkosten für Betonplattenwege
- switch concrete=lanes  0.5 # Zusatzkosten für Betonspurplatten
- switch surface=concrete|paving_stones|wood|metal 0.1 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
- switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 2 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
- switch surface=gravel|pebblestone 4
- switch surface=ground|grass|unpaved|dirt|earth|clay 3
- switch surface=mud|sand 100
- 0
+	add 
+		switch embedded_rails=tram|yes|rail 1 # Zusatzkosten bei Schienen in der Fahrbahn
+		0
+		
+		switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
+		switch concrete=plates 0 # Zusatzkosten für Betonplattenwege
+		switch concrete=lanes  0.5 # Zusatzkosten für Betonspurplatten
+		switch surface=concrete|paving_stones|wood|metal 0.1 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
+		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 2 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
+		switch surface=gravel|pebblestone 5
+		switch surface=ground|grass|unpaved|dirt|earth|clay 3
+		switch surface=mud|sand 100
+		switch tracktype=grade1	0
+		switch tracktype=grade2	4
+		switch tracktype=grade3	10
+		switch tracktype=grade4	20
+		switch tracktype=grade5	30
+		0
 
 assign downhillsurfacepenalty
- add switch embedded_rails=tram|yes|rail 20 # Zusatzkosten bei Schienen in der Fahrbahn
- 0
- switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
- switch concrete=plates 3 # Zusatzkosten für Betonplattenwege
- switch concrete=lanes  10 # Zusatzkosten für Betonspurplatten
- switch surface=concrete|paving_stones|wood|metal 2 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
- switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 50 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
- switch surface=gravel|pebblestone 50
- switch surface=ground|grass|unpaved|dirt|earth|clay 20
- switch surface=mud|sand 5000
- 0
+	add 
+		switch embedded_rails=tram|yes|rail 20 # Zusatzkosten bei Schienen in der Fahrbahn
+		0
+		
+		switch surface=asphalt|paved 0 #Zusatzkosten für Teer oder versiegelte Flächen
+		switch concrete=plates 3 # Zusatzkosten für Betonplattenwege
+		switch concrete=lanes  10 # Zusatzkosten für Betonspurplatten
+		switch surface=concrete|paving_stones|wood|metal 2 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
+		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 25 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
+		switch surface=gravel|pebblestone 50
+		switch surface=ground|grass|unpaved|dirt|earth|clay 20
+		switch surface=mud|sand 5000
+		switch tracktype=grade1	0
+		switch tracktype=grade2	35
+		switch tracktype=grade3	40
+		switch tracktype=grade4	60
+		switch tracktype=grade5	80
+		0
 
 assign smoothnesspenalty
  switch smoothness=excellent|very_good 0
@@ -282,38 +303,14 @@ assign mtb_scale_cost
 	switch not mtb:scale=	9999 # all other mtb:scale
 	0
 
-assign tracktype_cost
-	switch tracktype=grade1	0
-	switch tracktype=grade2	10
-	switch tracktype=grade3	20
-	switch tracktype=grade4	30
-	switch tracktype=grade5	50
-	0
-
-assign uphill_tracktype_cost
-	switch tracktype=grade1	0
-	switch tracktype=grade2	4
-	switch tracktype=grade3	10
-	switch tracktype=grade4	20
-	switch tracktype=grade5	30
-	0
-
-assign downhill_tracktype_cost
-	switch tracktype=grade1	0
-	switch tracktype=grade2	25
-	switch tracktype=grade3	40
-	switch tracktype=grade4	60
-	switch tracktype=grade5	80
-	0
-
 assign surfacing_cost
-	max max max mtb_scale_cost smoothnesspenalty surfacepenalty tracktype_cost
+	max max mtb_scale_cost smoothnesspenalty surfacepenalty
 
 assign uphill_surfacing_cost
-	max max max mtb_scale_cost uphillsmoothnesspenalty uphillsurfacepenalty uphill_tracktype_cost	
+	max max mtb_scale_cost uphillsmoothnesspenalty uphillsurfacepenalty
 
 assign downhill_surfacing_cost
-	max max max mtb_scale_cost downhillsmoothnesspenalty downhillsurfacepenalty downhill_tracktype_cost
+	max max mtb_scale_cost downhillsmoothnesspenalty downhillsurfacepenalty
 	
 
 

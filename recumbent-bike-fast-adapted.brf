@@ -230,7 +230,7 @@ assign uphillsurfacepenalty
  switch concrete=lanes  0.5 # Zusatzkosten für Betonspurplatten
  switch surface=concrete|paving_stones|wood|metal 0.1 #Zusatzkosten für Beton, Pflastersteine, Holz oder Metall
  switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 2 #Zusatzkosten für Kopfsteinpflaster, Splitt, verdichtete Deckschicht, behauene Pflastersteine oder Rasengittersteine
- switch surface=gravel|pebblestone 3
+ switch surface=gravel|pebblestone 4
  switch surface=ground|grass|unpaved|dirt|earth|clay 3
  switch surface=mud|sand 100
  0
@@ -251,7 +251,7 @@ assign downhillsurfacepenalty
 assign smoothnesspenalty
  switch smoothness=excellent|very_good 0
  switch smoothness=good 0.05
- switch smoothness=intermediate 1.5
+ switch smoothness=intermediate 2
  switch smoothness=bad 10
  switch smoothness=very_bad 40
  switch smoothness=horrible|very_horrible|impassable 100
@@ -282,21 +282,39 @@ assign mtb_scale_cost
 	switch not mtb:scale=	9999 # all other mtb:scale
 	0
 
-# use smoothness if present, otherwise use surface
-assign smoothness_or_surface_cost
-	switch mtb_scale_cost	mtb_scale_cost
-	switch not smoothness=	smoothnesspenalty
-	surfacepenalty
+assign tracktype_cost
+	switch tracktype=grade1	0
+	switch tracktype=grade2	10
+	switch tracktype=grade3	20
+	switch tracktype=grade4	30
+	switch tracktype=grade5	50
+	0
 
-assign uphill_smoothness_or_surface_cost
-	switch mtb_scale_cost	mtb_scale_cost
-	switch not smoothness=	uphillsmoothnesspenalty
-	uphillsurfacepenalty
+assign uphill_tracktype_cost
+	switch tracktype=grade1	0
+	switch tracktype=grade2	4
+	switch tracktype=grade3	10
+	switch tracktype=grade4	20
+	switch tracktype=grade5	30
+	0
 
-assign downhill_smoothness_or_surface_cost
-	switch mtb_scale_cost	mtb_scale_cost
-	switch not smoothness=	downhillsmoothnesspenalty
-	downhillsurfacepenalty
+assign downhill_tracktype_cost
+	switch tracktype=grade1	0
+	switch tracktype=grade2	25
+	switch tracktype=grade3	40
+	switch tracktype=grade4	60
+	switch tracktype=grade5	80
+	0
+
+assign surfacing_cost
+	max max max mtb_scale_cost smoothnesspenalty surfacepenalty tracktype_cost
+
+assign uphill_surfacing_cost
+	max max max mtb_scale_cost uphillsmoothnesspenalty uphillsurfacepenalty uphill_tracktype_cost	
+
+assign downhill_surfacing_cost
+	max max max mtb_scale_cost downhillsmoothnesspenalty downhillsurfacepenalty downhill_tracktype_cost
+	
 
 
 assign costfactor
@@ -311,7 +329,7 @@ assign costfactor
 
  add onewaypenalty
  add accesspenalty
- add smoothness_or_surface_cost
+ add surfacing_cost
  add flatspeedpenalty
 
  max 1
@@ -324,14 +342,7 @@ assign costfactor
  switch highway=unclassified 1 # Kosten für Verbindungsstraßen
  switch highway=residential 1.2 # Kosten für Wohn- und Zufahrtsstraßen
  switch highway=service 1 # Kosten für Wohn- und Zufahrtsstraßen
- switch highway=track
-  switch tracktype=grade1 1 # Kosten für geteerte, betonierte oder gepflasterte Feldwege
-  switch tracktype=grade2 10 # Kosten für geschotterte Feldwege
-  switch tracktype=grade3 20 # Kosten für Feldwege mit weichem Untergrund
-  switch tracktype=grade4 30 # Kosten für unbefestigte Feldwege
-  switch tracktype=grade5 50 # Kosten für kaum erkennbare Feldwege
-  switch surface= 30 # Kosten für Feldwege ohne Oberflächenangabe
-  1 # Kosten für Feldwege mit Oberflächenangabe
+ switch highway=track 1
  switch cycleway 1 # Kosten für Fahrradwege
  switch highway=living_street 2 # Kosten für Spielstraßen
  switch highway=road 3 # Kosten für noch nicht genauer beschriebene Straße
@@ -357,7 +368,7 @@ assign uphillcostfactor
 
  add onewaypenalty
  add accesspenalty
- add uphill_smoothness_or_surface_cost
+ add uphill_surfacing_cost
  add upspeedpenalty
  max 1
  switch highway=motorway|motorway_link 10000
@@ -368,14 +379,7 @@ assign uphillcostfactor
  switch highway=tertiary|tertiary_link 1.3
  switch highway=unclassified 1
  switch highway=residential|service 1
- switch highway=track
-  switch tracktype=grade1 1
-  switch tracktype=grade2 5
-  switch tracktype=grade3 10
-  switch tracktype=grade4 20
-  switch tracktype=grade5 30
-  switch surface= 20
-  1
+ switch highway=track 1
  switch cycleway 1
  switch highway=living_street 1
  switch highway=road 2
@@ -402,7 +406,7 @@ assign downhillcostfactor
  add downspeedpenalty
  add onewaypenalty
  add accesspenalty
- add downhill_smoothness_or_surface_cost
+ add downhill_surfacing_cost
  max 1
  switch highway=motorway|motorway_link 10000
  switch route=ferry 10.67
@@ -413,14 +417,7 @@ assign downhillcostfactor
  switch highway=unclassified 1
  switch highway=residential 3
  switch highway=service 1
- switch highway=track
-  switch tracktype=grade1 1.7
-  switch tracktype=grade2 25
-  switch tracktype=grade3 40
-  switch tracktype=grade4 60
-  switch tracktype=grade5 80
-  switch surface= 60
-  1.2
+ switch highway=track 1.5
  switch cycleway 2
  switch highway=living_street 6
  switch highway=road 6
@@ -488,7 +485,7 @@ assign way_is_reverse
 
 assign barrier_cost
 	switch barrier=gate				1000
-	switch barrier=lift_gate			100
+	switch barrier=lift_gate			500
 	switch barrier=stile				2000
 	switch barrier=cycle_barrier			500
 	switch barrier=cattle_grid			200

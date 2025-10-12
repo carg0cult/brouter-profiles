@@ -345,9 +345,7 @@ assign costfactor
  switch highway=road 3 # Kosten für noch nicht genauer beschriebene Straße
  switch footway 40 # Kosten für Fußwege
  switch highway=steps 100 # Kosten für Stufen
- switch highway=path
-  switch surface= 50 # Kosten für Pfade ohne Oberflächenangabe
-  1 # Kosten für Pfade mit Oberflächenangabe
+ switch highway=path 1.5
  switch highway=bridleway 2 # Kosten für Reitwege
  20 # Kosten für sonstige Wege
 
@@ -382,9 +380,7 @@ assign uphillcostfactor
  switch highway=road 2
  switch footway 20
  switch highway=steps 40
- switch highway=path
-  switch surface= 30 
-  1
+ switch highway=path 1
  switch highway=bridleway 1.5
  20
 
@@ -415,14 +411,12 @@ assign downhillcostfactor
  switch highway=residential 3
  switch highway=service 1
  switch highway=track 1.5
- switch cycleway 2
+ switch cycleway 3
  switch highway=living_street 6
  switch highway=road 6
  switch footway 100
  switch highway=steps 300
- switch highway=path
-  switch surface= 100
-  5
+ switch highway=path 8
  switch highway=bridleway 3
  20
 

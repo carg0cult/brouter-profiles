@@ -228,7 +228,7 @@ assign no_river_penalty
 		switch estimated_river_class=3  1
 		switch estimated_river_class=4  0.5
 		switch estimated_river_class=5  0.2
-		switch estimated_river_class=6  0 
+		switch estimated_river_class=6  0
 		99
 	0
 
@@ -431,10 +431,10 @@ assign downhillcostfactor
  min 9999
  max 1
 
- add downspeedpenalty
  add onewaypenalty
  add accesspenalty
  add downhill_surfacing_cost
+ add downspeedpenalty
  add noise_penalty
  add no_river_penalty
  add no_forest_penalty

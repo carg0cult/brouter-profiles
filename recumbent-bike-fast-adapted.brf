@@ -1,5 +1,9 @@
 ---context:global
 
+assign consider_noise        = false  # %consider_noise% | Activate to prefer a low-noise route | boolean
+assign consider_river        = false  # %consider_river% | Activate to prefer a route along rivers, lakes, etc. | boolean
+assign consider_forest       = false  # %consider_forest% | Activate to prefer a route in forest or parks | boolean
+
 assign no_steps = false # %no_steps% | keine Stufen, das Liegerad soll nicht getragen werden müssen | boolean
 assign no_wrong_oneway = false # %no_wrong oneway% | keine Einbahnstrasse in falsche Richtung, auch nicht schiebend | boolean
 
@@ -204,6 +208,43 @@ assign upspeedpenalty
  0
 
 
+assign noise_penalty
+	switch consider_noise
+		switch estimated_noise_class=   0
+		switch estimated_noise_class=1  0.3
+		switch estimated_noise_class=2  0.5
+		switch estimated_noise_class=3  0.7
+		switch estimated_noise_class=4  1
+		switch estimated_noise_class=5  1.2
+		switch estimated_noise_class=6  1.5
+		0
+	0
+
+assign no_river_penalty
+	switch consider_river
+		switch estimated_river_class=   3
+		switch estimated_river_class=1  2
+		switch estimated_river_class=2  1.5
+		switch estimated_river_class=3  1
+		switch estimated_river_class=4  0.5
+		switch estimated_river_class=5  0.2
+		switch estimated_river_class=6  0 
+		99
+	0
+
+assign no_forest_penalty
+	switch consider_forest
+		switch estimated_forest_class=   1
+		switch estimated_forest_class=1  0.5
+		switch estimated_forest_class=2  0.4
+		switch estimated_forest_class=3  0.25
+		switch estimated_forest_class=4  0.15
+		switch estimated_forest_class=5  0.1
+		switch estimated_forest_class=6  0
+		99
+	0
+
+
 assign surfacepenalty
 	add 
 		switch embedded_rails=tram|yes|rail 2 # Zusatzkosten bei Schienen in der Fahrbahn
@@ -321,6 +362,9 @@ assign costfactor
  add accesspenalty
  add surfacing_cost
  add flatspeedpenalty
+ add noise_penalty
+ add no_river_penalty
+ add no_forest_penalty
 
  max 1
  switch highway=motorway|motorway_link 10000
@@ -355,6 +399,10 @@ assign uphillcostfactor
  add accesspenalty
  add uphill_surfacing_cost
  add upspeedpenalty
+ add noise_penalty
+ add no_river_penalty
+ add no_forest_penalty
+ 
  max 1
  switch highway=motorway|motorway_link 10000
  switch route=ferry 10.67
@@ -387,6 +435,10 @@ assign downhillcostfactor
  add onewaypenalty
  add accesspenalty
  add downhill_surfacing_cost
+ add noise_penalty
+ add no_river_penalty
+ add no_forest_penalty
+ 
  max 1
  switch highway=motorway|motorway_link 10000
  switch route=ferry 10.67

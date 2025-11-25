@@ -511,7 +511,7 @@ assign classifiermask add          isbadoneway
 
 ---context:node
 
-assign barrierPenalties
+assign barrierPenalty
 	switch barrier=gate				1000
 	switch barrier=lift_gate			100
 	switch barrier=stile				2000
@@ -532,7 +532,7 @@ assign barrierPenalties
 	switch barrier=debris				2000
 	switch barrier=log				1000
 	#switch barrier=chicane				
-	switch barrier=kerb				300
+	switch barrier=kerb				50
 	switch barrier=sump_buster			50
 	#switch barrier=obstacle			100
 	switch barrier=horse_stile			1000
@@ -584,7 +584,7 @@ assign footAccess
                         1
 
 assign initialcost
-	add	barrierPenalties
+	add	barrierPenalty
 	add	trafficSignalPenalty
 		switch bikeAccess
 				0 

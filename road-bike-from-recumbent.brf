@@ -222,12 +222,12 @@ assign noise_penalty
 
 assign no_river_penalty
 	switch consider_river
-		switch estimated_river_class=   2
-		switch estimated_river_class=1  1.5
-		switch estimated_river_class=2  1.1
-		switch estimated_river_class=3  0.7
-		switch estimated_river_class=4  0.3
-		switch estimated_river_class=5  0.15
+		switch estimated_river_class=   1
+		switch estimated_river_class=1  0.5
+		switch estimated_river_class=2  0.4
+		switch estimated_river_class=3  0.25
+		switch estimated_river_class=4  0.15
+		switch estimated_river_class=5  0.1
 		switch estimated_river_class=6  0
 		99
 	0
@@ -254,9 +254,9 @@ assign surfacepenalty
 		switch concrete=plates 1
 		switch concrete=lanes  2
 		switch surface=concrete|paving_stones|wood|metal 0.5
-		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 6
-		switch surface=gravel|pebblestone 10
-		switch surface=ground|grass|unpaved|dirt|earth|clay 10
+		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 10
+		switch surface=gravel|pebblestone 15
+		switch surface=ground|grass|unpaved|dirt|earth|clay 15
 		switch surface=mud|sand 100
 		switch tracktype=grade1	0
 		switch tracktype=grade2	8
@@ -274,9 +274,9 @@ assign uphillsurfacepenalty
 		switch concrete=plates 0
 		switch concrete=lanes  0.5
 		switch surface=concrete|paving_stones|wood|metal 0.1
-		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 2
+		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 4
 		switch surface=gravel|pebblestone 5
-		switch surface=ground|grass|unpaved|dirt|earth|clay 3
+		switch surface=ground|grass|unpaved|dirt|earth|clay 5
 		switch surface=mud|sand 100
 		switch tracktype=grade1	0
 		switch tracktype=grade2	4
@@ -296,7 +296,7 @@ assign downhillsurfacepenalty
 		switch surface=concrete|paving_stones|wood|metal 2
 		switch surface=cobblestone|fine_gravel|compacted|sett|grass_paver 25
 		switch surface=gravel|pebblestone 50
-		switch surface=ground|grass|unpaved|dirt|earth|clay 20
+		switch surface=ground|grass|unpaved|dirt|earth|clay 50
 		switch surface=mud|sand 5000
 		switch tracktype=grade1	0
 		switch tracktype=grade2	35

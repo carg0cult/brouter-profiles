@@ -1,0 +1,39 @@
+--- recumbent-bike-fast-rv.brf	2025-11-13 18:52:27.840965968 +0100
++++ allroad-rv.brf	2025-11-22 09:12:10.457122137 +0100
+@@ -9,7 +9,7 @@
+ 
+ assign dismount_cost = 1000 # %dismount_cost% | Umweg in Meter der in Kauf genommen wird bevor eine Strecke genommen wird bei der man austeigen muss, ab 1 000 000 wird keine Schiebestrecke mehr genommen | number
+ assign avoid_cycleways = 5 # %avoid_cycleways% | Radwege vermeiden(0-10): 0 = nicht vermeiden, 1 = leicht vermeiden, 3 = Standard, 10 = stark vermeiden | number
+-assign avoid_elevation = 10 # %avoid_elevation% | Hohenmeter vermeiden(0-10): 0 = nicht vermeiden, 1 = leicht vermeiden, 5 = Standard, 10 = stark vermeiden | number
++assign avoid_elevation = 2 # %avoid_elevation% | Hohenmeter vermeiden(0-10): 0 = nicht vermeiden, 1 = leicht vermeiden, 5 = Standard, 10 = stark vermeiden | number
+ 
+ assign totalMass  = 100     # %totalMass% | Gesamtmasse des Fahrzeugs (Fahrzeug, Fahrer, Gepäck...) in kg, für Fahrtzeitschätzung | number
+ assign maxSpeed   = 120     # Maximale Geschwindigkeit ab der der Fahrer bremst in km/h
+@@ -65,7 +65,7 @@
+ 
+ assign turncost 
+  switch junction=roundabout 100
+- 400 # Kosten die für eine 90 Grad Abbiegung berechnet werden. Für kleinere Winkel werden sie mit turncost*cos(Winkel) berechnet, bei Kreisverkehr keine weitere Kosten
++ 200 # Kosten die für eine 90 Grad Abbiegung berechnet werden. Für kleinere Winkel werden sie mit turncost*cos(Winkel) berechnet, bei Kreisverkehr keine weitere Kosten
+ 
+ assign initialclassifier # hier wird bestimmten Wegen ein Wert zugeordnet und wenn er sich vom vorherigen unterscheidet die initalcost hinzugerechnet
+  switch route=ferry 2
+@@ -222,12 +222,12 @@
+ 
+ assign no_river_penalty
+ 	switch consider_river
+-		switch estimated_river_class=   2
+-		switch estimated_river_class=1  1.5
+-		switch estimated_river_class=2  1.1
+-		switch estimated_river_class=3  0.7
+-		switch estimated_river_class=4  0.3
+-		switch estimated_river_class=5  0.15
++		switch estimated_river_class=   1
++		switch estimated_river_class=1  0.5
++		switch estimated_river_class=2  0.4
++		switch estimated_river_class=3  0.25
++		switch estimated_river_class=4  0.15
++		switch estimated_river_class=5  0.1
+ 		switch estimated_river_class=6  0
+ 		99
+ 	0

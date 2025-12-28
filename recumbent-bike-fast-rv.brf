@@ -11,8 +11,8 @@ assign dismount_cost = 1000  # %dismount_cost% | Acceptable detour in meters to 
 assign avoid_cycleways = 5   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 assign avoid_elevation = 10  # %avoid_elevation% | Avoid elevation (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 
-assign totalMass  = 100    # %totalMass% | Total weight of the vehicle including rider and luggage in kg, for estimation of travel time | number
-assign maxSpeed   = 120    # Maximum speed of the vehicle in km/h
+assign totalMass  = 90    # %totalMass% | Total weight of the vehicle including rider and luggage in kg, for estimation of travel time | number
+assign maxSpeed   = 90    # Maximum speed of the vehicle in km/h
 assign S_C_x      = 0.23   # Drag coefficient times the reference area in m², for estimation of travel time
 assign C_r        = 0.004  # Rolling resistance coefficient, for estimation of travel time
 assign bikerPower = 125    # %bikerPower% | Average driving power in W, for estimation of travel time  | number

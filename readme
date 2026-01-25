@@ -3,3 +3,10 @@ On Smartphone for use in Locus Maps, copy profile to Internal Storage/Android/da
 Then in Locus Maps: Settings - Navigation - Router: Routing profile, EXTERNAL PROFILES
 
 on Android 15 copy works only by starting Shizuku, then copy with Solid Explorer
+
+Shizuku:
+Settings - Developer options - Debugging - Wireless debugging on (needs to be done every time)
+tap Wireless debugging - Pair device with pairing code
+Start via wireless debugging
+tap notification 'Pairing service found' - Enter pairing code - Send
+Shizuku - Start

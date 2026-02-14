@@ -629,13 +629,14 @@ assign traffic_signals_my_direction
 		and way:way_is_reverse traffic_signals:direction=backward
 
 assign traffic_signals_cost
-	switch traffic_signals_my_direction 500
+	switch traffic_signals_my_direction 400
 	0
 
 assign stop_cost
 	switch highway=traffic_signals traffic_signals_cost
-	switch highway=stop 400  # stop sign, TODO: don't count if traffic_signals is nearby
-	switch railway=crossing|level_crossing 400
+	switch crossing=traffic_signals 400
+	switch highway=stop 300  # stop sign, TODO: don't count if traffic_signals is nearby
+	switch railway=crossing|level_crossing 300
 	0
 
 assign slow_cost

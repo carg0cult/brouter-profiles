@@ -587,7 +587,7 @@ assign way_is_reverse
 
 assign barrier_cost
 	switch barrier=gate				1000
-	switch barrier=lift_gate			500
+	switch barrier=lift_gate			100
 	switch barrier=stile				2000
 	switch barrier=cycle_barrier			500
 	switch barrier=cattle_grid			200

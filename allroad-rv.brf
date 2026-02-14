@@ -571,7 +571,12 @@ assign classifiermask
 					multiply isgoodforcars 16
 
 
-# hack to be able to use reversedirection in the node context
+# to be able to know in the node context whether we are on a cycleway or similar
+assign on_cycleway
+	switch highway=path|cycleway|footway true
+	false # other highways
+
+# to be able to use reversedirection in the node context
 assign way_is_reverse 
 	switch reversedirection=yes true
 	false
@@ -629,14 +634,28 @@ assign traffic_signals_my_direction
 		and way:way_is_reverse traffic_signals:direction=backward
 
 assign traffic_signals_cost
-	switch traffic_signals_my_direction 400
+	switch traffic_signals_my_direction 300
+	0
+
+assign is_crossing_with_signals
+	switch
+		and
+			highway=crossing
+			crossing=traffic_signals
+		true
+	false
+
+assign crossing_signals_cost
+	switch is_crossing_with_signals
+		switch way:on_cycleway 350
+		50 # little cost on a road, we may already have traffic_signals_cost, or not, we don't know
 	0
 
 assign stop_cost
 	switch highway=traffic_signals traffic_signals_cost
-	switch crossing=traffic_signals 400
-	switch highway=stop 300  # stop sign, TODO: don't count if traffic_signals is nearby
-	switch railway=crossing|level_crossing 300
+	switch highway=crossing crossing_signals_cost
+	switch highway=stop 200  # stop sign, TODO: don't count if backwards, don't count if traffic_signals is nearby
+	switch railway=crossing|level_crossing 200
 	0
 
 assign slow_cost

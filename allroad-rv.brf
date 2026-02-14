@@ -208,25 +208,25 @@ assign maxspeed
 
 
 assign flatspeedpenalty
-	switch equal maxspeed 10 2
-	switch equal maxspeed 20 0.2
+	switch equal maxspeed 10 1
+	switch equal maxspeed 20 0
 	switch equal maxspeed 30 0
 	switch equal maxspeed 40 0
 	switch equal maxspeed 50 0
 	0
 
 assign upspeedpenalty
-	switch equal maxspeed 10 0.3
+	switch equal maxspeed 10 0.1
 	switch equal maxspeed 20 0
 	switch equal maxspeed 30 0
 	0
 
 assign downspeedpenalty
-	switch equal maxspeed 10 10
-	switch equal maxspeed 20 5
-	switch equal maxspeed 30 0.7
-	switch equal maxspeed 40 0.2
-	switch equal maxspeed 50 0.1
+	switch equal maxspeed 10 2
+	switch equal maxspeed 20 1
+	switch equal maxspeed 30 0.2
+	switch equal maxspeed 40 0
+	switch equal maxspeed 50 0
 	0
 
 
@@ -339,28 +339,31 @@ assign downhillsurfacepenalty
 assign smoothnesspenalty
 	switch smoothness=excellent|very_good 0
 	switch smoothness=good 0
-	switch smoothness=intermediate 1.5
-	switch smoothness=bad 5
-	switch smoothness=very_bad 40
-	switch smoothness=horrible|very_horrible|impassable 100
+	switch smoothness=intermediate 0.4
+	switch smoothness=bad 2
+	switch smoothness=very_bad 20
+	switch smoothness=horrible 50
+	switch smoothness=very_horrible|impassable 100
 	0
 
 assign uphillsmoothnesspenalty
 	switch smoothness=excellent|very_good 0
 	switch smoothness=good 0
-	switch smoothness=intermediate 0.2
-	switch smoothness=bad 2
+	switch smoothness=intermediate 0.1
+	switch smoothness=bad 1
 	switch smoothness=very_bad 10
-	switch smoothness=horrible|very_horrible|impassable 100
+	switch smoothness=horrible 30
+	switch smoothness=very_horrible|impassable 100
 	0
 
 assign downhillsmoothnesspenalty
 	switch smoothness=excellent|very_good 0
 	switch smoothness=good 0
-	switch smoothness=intermediate 3
-	switch smoothness=bad 20
+	switch smoothness=intermediate 1
+	switch smoothness=bad 10
 	switch smoothness=very_bad 100
-	switch smoothness=horrible|very_horrible|impassable 1000
+	switch smoothness=horrible 500
+	switch smoothness=very_horrible|impassable 1000
 	0
 
 assign mtb_scale_cost

@@ -342,7 +342,8 @@ assign smoothnesspenalty
 	switch smoothness=intermediate 2
 	switch smoothness=bad 10
 	switch smoothness=very_bad 40
-	switch smoothness=horrible|very_horrible|impassable 100
+	switch smoothness=horrible 100
+	switch smoothness=very_horrible|impassable 100
 	0
 
 assign uphillsmoothnesspenalty
@@ -351,7 +352,8 @@ assign uphillsmoothnesspenalty
 	switch smoothness=intermediate 0.3
 	switch smoothness=bad 3
 	switch smoothness=very_bad 10
-	switch smoothness=horrible|very_horrible|impassable 100
+	switch smoothness=horrible 100
+	switch smoothness=very_horrible|impassable 100
 	0
 
 assign downhillsmoothnesspenalty
@@ -360,7 +362,8 @@ assign downhillsmoothnesspenalty
 	switch smoothness=intermediate 5
 	switch smoothness=bad 30
 	switch smoothness=very_bad 100
-	switch smoothness=horrible|very_horrible|impassable 1000
+	switch smoothness=horrible 1000
+	switch smoothness=very_horrible|impassable 1000
 	0
 
 assign mtb_scale_cost

@@ -651,10 +651,21 @@ assign crossing_signals_cost
 		50 # little cost on a road, we may already have traffic_signals_cost, or not, we don't know
 	0
 
+assign stop_sign_my_direction
+	and
+		highway=stop
+		or
+			and not way:way_is_reverse direction=forward
+			and way:way_is_reverse direction=backward
+
+assign stop_sign_cost
+	switch stop_sign_my_direction 200
+	0
+
 assign stop_cost
 	switch highway=traffic_signals traffic_signals_cost
 	switch highway=crossing crossing_signals_cost
-	switch highway=stop 200  # stop sign, TODO: don't count if backwards, don't count if traffic_signals is nearby
+	switch highway=stop stop_sign_cost  # stop sign, TODO: don't count if traffic_signals is nearby
 	switch railway=crossing|level_crossing 200
 	0
 

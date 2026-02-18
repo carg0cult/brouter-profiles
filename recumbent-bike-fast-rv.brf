@@ -666,11 +666,14 @@ assign stop_cost
 	switch highway=traffic_signals traffic_signals_cost
 	switch highway=crossing crossing_signals_cost
 	switch highway=stop stop_sign_cost  # stop sign, TODO: don't count if traffic_signals is nearby
-	switch railway=crossing|level_crossing 200
+	0
+
+assign level_crossing_cost
+	switch railway=crossing|level_crossing 150  # for the bumpiness of the track and the possibility of stopping for a train if there isn't already traffic signals
 	0
 
 assign slow_cost
-	add barrier_cost stop_cost
+	add add barrier_cost stop_cost level_crossing_cost
 
 
 assign defaultaccess

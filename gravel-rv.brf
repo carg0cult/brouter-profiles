@@ -2,13 +2,13 @@
 
 assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
 assign consider_river = false   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
-assign consider_forest = false  # %consider_forest% | Prefer a route in forest or parks | boolean
+assign consider_forest = true  # %consider_forest% | Prefer a route in forest or parks | boolean
 
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean
 
-assign dismount_cost = 1000  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
-assign avoid_cycleways = 5   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
+assign dismount_cost = 400  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
+assign avoid_cycleways = 0   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 assign avoid_elevation = 2   # %avoid_elevation% | Avoid elevation (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 
 assign totalMass  = 90    # %totalMass% | Total weight of the vehicle including rider and luggage in kg, for estimation of travel time | number
@@ -69,18 +69,40 @@ assign turncost
 
 assign initialclassifier
 	switch route=ferry 2
-	switch highway=steps 3
-	switch cycleway 4
-	switch footway 5
+	switch ford=yes 3
+	switch highway=motorway|motorway_link 4
+	switch highway=trunk|trunk_link 5
+	switch highway=primary|primary_link 6
+	switch highway=secondary|secondary_link 7
+	switch highway=tertiary|tertiary_link 8
+	switch highway=unclassified 9
+	switch highway=residential 10
+	switch highway=living_street 11
+	switch highway=service 12
+	switch highway=track 13
+	switch cycleway 14
+	switch footway 15
+	switch highway=steps 16
 	1
 
 assign initialcost
 	switch route=ferry 10000
+	switch ford=yes 1000
+	switch highway=motorway|motorway_link 10000
+	switch highway=trunk|trunk_link 2000
+	switch highway=primary|primary_link 1000
+	switch highway=secondary|secondary_link 250
+	switch highway=tertiary|tertiary_link 50
+	switch highway=unclassified 0
+	switch highway=residential 0
+	switch highway=living_street 0
+	switch highway=service 0
+	switch highway=track 0
 	switch highway=steps
 		switch no_steps 1000000
 		dismount_cost
 	switch cycleway
-		multiply 11.1111112
+		multiply 10
 			multiply avoid_cycleways avoid_cycleways
 	switch footway dismount_cost
 	0

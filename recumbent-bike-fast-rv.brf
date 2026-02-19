@@ -69,18 +69,40 @@ assign turncost
 
 assign initialclassifier
 	switch route=ferry 2
-	switch highway=steps 3
-	switch cycleway 4
-	switch footway 5
+	switch ford=yes 3
+	switch highway=motorway|motorway_link 4
+	switch highway=trunk|trunk_link 5
+	switch highway=primary|primary_link 6
+	switch highway=secondary|secondary_link 7
+	switch highway=tertiary|tertiary_link 8
+	switch highway=unclassified 9
+	switch highway=residential 10
+	switch highway=living_street 11
+	switch highway=service 12
+	switch highway=track 13
+	switch cycleway 14
+	switch footway 15
+	switch highway=steps 16
 	1
 
 assign initialcost
 	switch route=ferry 10000
+	switch ford=yes 1000
+	switch highway=motorway|motorway_link 10000
+	switch highway=trunk|trunk_link 2000
+	switch highway=primary|primary_link 1000
+	switch highway=secondary|secondary_link 250
+	switch highway=tertiary|tertiary_link 50
+	switch highway=unclassified 0
+	switch highway=residential 0
+	switch highway=living_street 0
+	switch highway=service 0
+	switch highway=track 0
 	switch highway=steps
 		switch no_steps 1000000
 		dismount_cost
 	switch cycleway
-		multiply 11.1111112
+		multiply 10
 			multiply avoid_cycleways avoid_cycleways
 	switch footway dismount_cost
 	0

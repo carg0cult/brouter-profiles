@@ -3,6 +3,7 @@
 assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
 assign consider_river = false   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
 assign consider_forest = true  # %consider_forest% | Prefer a route in forest or parks | boolean
+assign consider_town = true    # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
 
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean
@@ -288,6 +289,18 @@ assign no_forest_penalty
 		99
 	0
 
+assign town_penalty
+	switch consider_town
+		switch estimated_town_class=  0
+		switch estimated_town_class=1  0
+		switch estimated_town_class=2  0.05
+		switch estimated_town_class=3  0.1
+		switch estimated_town_class=4  0.2
+		switch estimated_town_class=5  0.3
+		switch estimated_town_class=6  0.4
+		99
+	0
+
 
 assign surfacepenalty
 	add 
@@ -430,6 +443,7 @@ assign costfactor
 	add noise_penalty
 	add no_river_penalty
 	add no_forest_penalty
+	add town_penalty
 
 	max 1
 	switch highway=motorway|motorway_link 10000
@@ -473,6 +487,7 @@ assign uphillcostfactor
 	add noise_penalty
 	add no_river_penalty
 	add no_forest_penalty
+	add town_penalty
  
 	max 1
 	switch highway=motorway|motorway_link 10000
@@ -516,6 +531,7 @@ assign downhillcostfactor
 	add noise_penalty
 	add no_river_penalty
 	add no_forest_penalty
+	add town_penalty
  
 	max 1
 	switch highway=motorway|motorway_link 10000

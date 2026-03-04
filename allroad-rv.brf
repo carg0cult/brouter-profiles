@@ -3,7 +3,7 @@
 assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
 assign consider_river = false   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
 assign consider_forest = false  # %consider_forest% | Prefer a route in forest or parks | boolean
-assign consider_town = true    # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
+assign consider_town = false    # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
 
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean

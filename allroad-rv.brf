@@ -1,3 +1,5 @@
+# allroad rv
+
 ---context:global
 
 assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
@@ -66,7 +68,7 @@ assign footway
 
 assign turncost 
 	switch junction=roundabout 100
-	50  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
+	60  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
 
 assign initialclassifier
 	switch route=ferry 2

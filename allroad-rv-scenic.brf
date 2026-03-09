@@ -1,14 +1,17 @@
+# allroad rv scenic
+
 ---context:global
 
 assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
 assign consider_river = false   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
-assign consider_forest = true   # %consider_forest% | Prefer a route in forest or parks | boolean
+assign consider_forest = true  # %consider_forest% | Prefer a route in forest or parks | boolean
+assign consider_town = true    # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
 
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean
 
-assign dismount_cost = 1000  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
-assign avoid_cycleways = 5   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
+assign dismount_cost = 500  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
+assign avoid_cycleways = 1   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 assign avoid_elevation = 2   # %avoid_elevation% | Avoid elevation (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 
 assign totalMass  = 90    # %totalMass% | Total weight of the vehicle including rider and luggage in kg, for estimation of travel time | number
@@ -65,22 +68,44 @@ assign footway
 
 assign turncost 
 	switch junction=roundabout 100
-	200  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
+	60  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
 
 assign initialclassifier
 	switch route=ferry 2
-	switch highway=steps 3
-	switch cycleway 4
-	switch footway 5
+	switch ford=yes 3
+	switch highway=motorway|motorway_link 4
+	switch highway=trunk|trunk_link 5
+	switch highway=primary|primary_link 6
+	switch highway=secondary|secondary_link 7
+	switch highway=tertiary|tertiary_link 8
+	switch highway=unclassified 9
+	switch highway=residential 10
+	switch highway=living_street 11
+	switch highway=service 12
+	switch highway=track 13
+	switch cycleway 14
+	switch footway 15
+	switch highway=steps 16
 	1
 
 assign initialcost
 	switch route=ferry 10000
+	switch ford=yes 1000
+	switch highway=motorway|motorway_link 10000
+	switch highway=trunk|trunk_link 2000
+	switch highway=primary|primary_link 1000
+	switch highway=secondary|secondary_link 250
+	switch highway=tertiary|tertiary_link 50
+	switch highway=unclassified 0
+	switch highway=residential 0
+	switch highway=living_street 0
+	switch highway=service 0
+	switch highway=track 0
 	switch highway=steps
 		switch no_steps 1000000
 		dismount_cost
 	switch cycleway
-		multiply 11.1111112
+		multiply 10
 			multiply avoid_cycleways avoid_cycleways
 	switch footway dismount_cost
 	0
@@ -208,25 +233,25 @@ assign maxspeed
 
 
 assign flatspeedpenalty
-	switch equal maxspeed 10 2
-	switch equal maxspeed 20 0.2
+	switch equal maxspeed 10 1
+	switch equal maxspeed 20 0
 	switch equal maxspeed 30 0
 	switch equal maxspeed 40 0
 	switch equal maxspeed 50 0
 	0
 
 assign upspeedpenalty
-	switch equal maxspeed 10 0.3
+	switch equal maxspeed 10 0.1
 	switch equal maxspeed 20 0
 	switch equal maxspeed 30 0
 	0
 
 assign downspeedpenalty
-	switch equal maxspeed 10 10
-	switch equal maxspeed 20 5
-	switch equal maxspeed 30 0.7
-	switch equal maxspeed 40 0.2
-	switch equal maxspeed 50 0.1
+	switch equal maxspeed 10 2
+	switch equal maxspeed 20 1
+	switch equal maxspeed 30 0.2
+	switch equal maxspeed 40 0
+	switch equal maxspeed 50 0
 	0
 
 
@@ -263,6 +288,18 @@ assign no_forest_penalty
 		switch estimated_forest_class=4  0.15
 		switch estimated_forest_class=5  0.1
 		switch estimated_forest_class=6  0
+		99
+	0
+
+assign town_penalty
+	switch consider_town
+		switch estimated_town_class=  0
+		switch estimated_town_class=1  0
+		switch estimated_town_class=2  0.05
+		switch estimated_town_class=3  0.1
+		switch estimated_town_class=4  0.2
+		switch estimated_town_class=5  0.3
+		switch estimated_town_class=6  0.4
 		99
 	0
 
@@ -339,28 +376,31 @@ assign downhillsurfacepenalty
 assign smoothnesspenalty
 	switch smoothness=excellent|very_good 0
 	switch smoothness=good 0
-	switch smoothness=intermediate 1.5
-	switch smoothness=bad 5
-	switch smoothness=very_bad 40
-	switch smoothness=horrible|very_horrible|impassable 100
+	switch smoothness=intermediate 0.4
+	switch smoothness=bad 2
+	switch smoothness=very_bad 20
+	switch smoothness=horrible 50
+	switch smoothness=very_horrible|impassable 100
 	0
 
 assign uphillsmoothnesspenalty
 	switch smoothness=excellent|very_good 0
 	switch smoothness=good 0
-	switch smoothness=intermediate 0.2
-	switch smoothness=bad 2
+	switch smoothness=intermediate 0.1
+	switch smoothness=bad 1
 	switch smoothness=very_bad 10
-	switch smoothness=horrible|very_horrible|impassable 100
+	switch smoothness=horrible 30
+	switch smoothness=very_horrible|impassable 100
 	0
 
 assign downhillsmoothnesspenalty
 	switch smoothness=excellent|very_good 0
 	switch smoothness=good 0
-	switch smoothness=intermediate 3
-	switch smoothness=bad 20
+	switch smoothness=intermediate 1
+	switch smoothness=bad 10
 	switch smoothness=very_bad 100
-	switch smoothness=horrible|very_horrible|impassable 1000
+	switch smoothness=horrible 500
+	switch smoothness=very_horrible|impassable 1000
 	0
 
 assign mtb_scale_cost
@@ -402,12 +442,13 @@ assign costfactor
 	add noise_penalty
 	add no_river_penalty
 	add no_forest_penalty
+	add town_penalty
 
 	max 1
 	switch highway=motorway|motorway_link 10000
 	switch route=ferry 10.67
 	switch highway=trunk|trunk_link 8
-	switch highway=primary|primary_link 5
+	switch highway=primary|primary_link 4
 	switch highway=secondary|secondary_link 2
 	switch highway=tertiary|tertiary_link 1.1
 	switch highway=unclassified 1
@@ -445,6 +486,7 @@ assign uphillcostfactor
 	add noise_penalty
 	add no_river_penalty
 	add no_forest_penalty
+	add town_penalty
  
 	max 1
 	switch highway=motorway|motorway_link 10000
@@ -488,6 +530,7 @@ assign downhillcostfactor
 	add noise_penalty
 	add no_river_penalty
 	add no_forest_penalty
+	add town_penalty
  
 	max 1
 	switch highway=motorway|motorway_link 10000
@@ -568,7 +611,12 @@ assign classifiermask
 					multiply isgoodforcars 16
 
 
-# hack to be able to use reversedirection in the node context
+# to be able to know in the node context whether we are on a cycleway or similar
+assign on_cycleway
+	switch highway=path|cycleway|footway true
+	false # other highways
+
+# to be able to use reversedirection in the node context
 assign way_is_reverse 
 	switch reversedirection=yes true
 	false
@@ -579,7 +627,7 @@ assign way_is_reverse
 
 assign barrier_cost
 	switch barrier=gate				1000
-	switch barrier=lift_gate			500
+	switch barrier=lift_gate			100
 	switch barrier=stile				2000
 	switch barrier=cycle_barrier			500
 	switch barrier=cattle_grid			200
@@ -598,7 +646,7 @@ assign barrier_cost
 	switch barrier=debris				2000
 	switch barrier=log				1000
 	#switch barrier=chicane				
-	switch barrier=kerb				500
+	switch barrier=kerb				50 # lower value if kerb=lowered when it becomes available
 	switch barrier=sump_buster			50
 	#switch barrier=obstacle			100
 	switch barrier=horse_stile			1000
@@ -626,17 +674,46 @@ assign traffic_signals_my_direction
 		and way:way_is_reverse traffic_signals:direction=backward
 
 assign traffic_signals_cost
-	switch traffic_signals_my_direction 500
+	switch traffic_signals_my_direction 300
+	0
+
+assign is_crossing_with_signals
+	switch
+		and
+			highway=crossing
+			crossing=traffic_signals
+		true
+	false
+
+assign crossing_signals_cost
+	switch is_crossing_with_signals
+		switch way:on_cycleway 350
+		50 # little cost on a road, we may already have traffic_signals_cost, or not, we don't know
+	0
+
+assign stop_sign_my_direction
+	and
+		highway=stop
+		or
+			and not way:way_is_reverse direction=forward
+			and way:way_is_reverse direction=backward
+
+assign stop_sign_cost
+	switch stop_sign_my_direction 200
 	0
 
 assign stop_cost
 	switch highway=traffic_signals traffic_signals_cost
-	switch highway=stop 400  # stop sign, TODO: don't count if traffic_signals is nearby
-	switch railway=crossing|level_crossing 400
+	switch highway=crossing crossing_signals_cost
+	switch highway=stop stop_sign_cost  # stop sign, TODO: don't count if traffic_signals is nearby
+	0
+
+assign level_crossing_cost
+	switch railway=crossing|level_crossing 50  # for the bumpiness of the track and the possibility of stopping for a train if there isn't already traffic signals
 	0
 
 assign slow_cost
-	add barrier_cost stop_cost
+	add add barrier_cost stop_cost level_crossing_cost
 
 
 assign defaultaccess

@@ -1,12 +1,19 @@
 On Smartphone for use in Locus Maps, copy profile to Internal Storage/Android/data/menion.android.locus.pro/files/Locus/router/profiles2/
-(accessible on Android 13 only FV File Explorer, not by regular file manager on device)
 Then in Locus Maps: Settings - Navigation - Router: Routing profile, EXTERNAL PROFILES
 
-on Android 15 copy works only by starting Shizuku, then copy with Solid Explorer
+on Android 15 copy works only by starting Shizuku, then copy with X-Plore
 
 Shizuku:
-Settings - Developer options - Debugging - Wireless debugging on (needs to be done every time)
+Android Settings - Developer options - Debugging - Wireless debugging on (needs to be done every time)
 tap Wireless debugging - Pair device with pairing code
-Start via wireless debugging
+in Shizuku Start via wireless debugging - Pairing
 tap notification 'Pairing service found' - Enter pairing code - Send
+'You can start Shizuku service now'
 Shizuku - Start
+Shizuku is running
+Authorized 1 application (X-Plore)
+
+X-Plore:
+screen to landscape mode
+navigate to source left and destination right
+long tap file - Move

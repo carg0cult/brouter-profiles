@@ -1,3 +1,5 @@
+# recumbent bike fast rv
+
 ---context:global
 
 assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
@@ -316,7 +318,7 @@ assign surfacepenalty
 		switch surface=cobblestone 50  # add |unhewn_cobblestone when it's added to the routing data
 		switch surface=fine_gravel|compacted 10
 		switch surface=gravel|pebblestone 30
-		switch surface=ground|grass|unpaved|dirt|earth|clay 25
+		switch surface=ground|grass|unpaved|dirt|earth|clay 40
 		switch surface=mud|sand 200
 		switch tracktype=grade1	0
 		switch tracktype=grade2	8
@@ -338,8 +340,8 @@ assign uphillsurfacepenalty
 		switch surface=sett|grass_paver 3
 		switch surface=cobblestone 10  # add |unhewn_cobblestone when it's added to the routing data
 		switch surface=fine_gravel|compacted 5
-		switch surface=gravel|pebblestone 10
-		switch surface=ground|grass|unpaved|dirt|earth|clay 20
+		switch surface=gravel|pebblestone 20
+		switch surface=ground|grass|unpaved|dirt|earth|clay 25
 		switch surface=mud|sand 100
 		switch tracktype=grade1	0
 		switch tracktype=grade2	4
@@ -362,7 +364,7 @@ assign downhillsurfacepenalty
 		switch surface=cobblestone 100  # add |unhewn_cobblestone when it's added to the routing data
 		switch surface=fine_gravel|compacted 50
 		switch surface=gravel|pebblestone 100
-		switch surface=ground|grass|unpaved|dirt|earth|clay 100
+		switch surface=ground|grass|unpaved|dirt|earth|clay 150
 		switch surface=mud|sand 1000
 		switch tracktype=grade1	0
 		switch tracktype=grade2	40

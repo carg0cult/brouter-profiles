@@ -4,13 +4,13 @@
 
 assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
 assign consider_river = false   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
-assign consider_forest = true  # %consider_forest% | Prefer a route in forest or parks | boolean
-assign consider_town = true    # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
+assign consider_forest = true   # %consider_forest% | Prefer a route in forest or parks | boolean
+assign consider_town = true     # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
 
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean
 
-assign dismount_cost = 400  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
+assign dismount_cost = 400   # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
 assign avoid_cycleways = 0   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 assign avoid_elevation = 2   # %avoid_elevation% | Avoid elevation (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 
@@ -258,23 +258,23 @@ assign downspeedpenalty
 assign noise_penalty
 	switch consider_noise
 		switch estimated_noise_class=   0
-		switch estimated_noise_class=1  0.3
-		switch estimated_noise_class=2  0.5
+		switch estimated_noise_class=1  0.2
+		switch estimated_noise_class=2  0.4
 		switch estimated_noise_class=3  0.7
 		switch estimated_noise_class=4  1
-		switch estimated_noise_class=5  1.2
+		switch estimated_noise_class=5  1.25
 		switch estimated_noise_class=6  1.5
 		0
 	0
 
 assign no_river_penalty
 	switch consider_river
-		switch estimated_river_class=   1
-		switch estimated_river_class=1  0.5
-		switch estimated_river_class=2  0.4
-		switch estimated_river_class=3  0.25
-		switch estimated_river_class=4  0.15
-		switch estimated_river_class=5  0.1
+		switch estimated_river_class=   0.4
+		switch estimated_river_class=1  0.3
+		switch estimated_river_class=2  0.2
+		switch estimated_river_class=3  0.1
+		switch estimated_river_class=4  0.05
+		switch estimated_river_class=5  0
 		switch estimated_river_class=6  0
 		99
 	0
@@ -282,11 +282,11 @@ assign no_river_penalty
 assign no_forest_penalty
 	switch consider_forest
 		switch estimated_forest_class=   1
-		switch estimated_forest_class=1  0.5
-		switch estimated_forest_class=2  0.4
-		switch estimated_forest_class=3  0.25
-		switch estimated_forest_class=4  0.15
-		switch estimated_forest_class=5  0.1
+		switch estimated_forest_class=1  0.8
+		switch estimated_forest_class=2  0.6
+		switch estimated_forest_class=3  0.3
+		switch estimated_forest_class=4  0.1
+		switch estimated_forest_class=5  0.05
 		switch estimated_forest_class=6  0
 		99
 	0

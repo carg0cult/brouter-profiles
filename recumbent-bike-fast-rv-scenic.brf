@@ -1,18 +1,18 @@
-# gravel rv
+# recumbent bike fast rv
 
 ---context:global
 
-assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
-assign consider_river = false   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
-assign consider_forest = false  # %consider_forest% | Prefer a route in forest or parks | boolean
-assign consider_town = false    # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
+assign consider_noise = true   # %consider_noise% | Prefer a low-noise route | boolean
+assign consider_river = true   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
+assign consider_forest = true  # %consider_forest% | Prefer a route in forest or parks | boolean
+assign consider_town = true    # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
 
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean
 
-assign dismount_cost = 400   # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
-assign avoid_cycleways = 0   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
-assign avoid_elevation = 2   # %avoid_elevation% | Avoid elevation (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
+assign dismount_cost = 1000  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
+assign avoid_cycleways = 5   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
+assign avoid_elevation = 10  # %avoid_elevation% | Avoid elevation (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 
 assign totalMass  = 90     # %totalMass% | Total weight of the vehicle including rider and luggage in kg, for estimation of travel time | number
 assign maxSpeed   = 90     # Maximum speed of the vehicle in km/h
@@ -68,7 +68,7 @@ assign footway
 
 assign turncost 
 	switch junction=roundabout 100
-	20  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
+	200  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
 
 assign initialclassifier
 	switch route=ferry 2
@@ -233,25 +233,25 @@ assign maxspeed
 
 
 assign flatspeedpenalty
-	switch equal maxspeed 10 1
-	switch equal maxspeed 20 0
+	switch equal maxspeed 10 2
+	switch equal maxspeed 20 0.2
 	switch equal maxspeed 30 0
 	switch equal maxspeed 40 0
 	switch equal maxspeed 50 0
 	0
 
 assign upspeedpenalty
-	switch equal maxspeed 10 0
+	switch equal maxspeed 10 0.3
 	switch equal maxspeed 20 0
 	switch equal maxspeed 30 0
 	0
 
 assign downspeedpenalty
-	switch equal maxspeed 10 2
-	switch equal maxspeed 20 1
-	switch equal maxspeed 30 0.2
-	switch equal maxspeed 40 0
-	switch equal maxspeed 50 0
+	switch equal maxspeed 10 10
+	switch equal maxspeed 20 5
+	switch equal maxspeed 30 0.7
+	switch equal maxspeed 40 0.2
+	switch equal maxspeed 50 0.1
 	0
 
 
@@ -269,22 +269,22 @@ assign noise_penalty
 
 assign no_river_penalty
 	switch consider_river
-		switch estimated_river_class=   0.4
-		switch estimated_river_class=1  0.3
-		switch estimated_river_class=2  0.2
-		switch estimated_river_class=3  0.1
-		switch estimated_river_class=4  0.05
-		switch estimated_river_class=5  0
+		switch estimated_river_class=   0.6
+		switch estimated_river_class=1  0.5
+		switch estimated_river_class=2  0.35
+		switch estimated_river_class=3  0.2
+		switch estimated_river_class=4  0.1
+		switch estimated_river_class=5  0.05
 		switch estimated_river_class=6  0
 		99
 	0
 
 assign no_forest_penalty
 	switch consider_forest
-		switch estimated_forest_class=   1
-		switch estimated_forest_class=1  0.8
-		switch estimated_forest_class=2  0.6
-		switch estimated_forest_class=3  0.3
+		switch estimated_forest_class=   0.6
+		switch estimated_forest_class=1  0.5
+		switch estimated_forest_class=2  0.35
+		switch estimated_forest_class=3  0.2
 		switch estimated_forest_class=4  0.1
 		switch estimated_forest_class=5  0.05
 		switch estimated_forest_class=6  0
@@ -293,7 +293,7 @@ assign no_forest_penalty
 
 assign town_penalty
 	switch consider_town
-		switch estimated_town_class=  0
+		switch estimated_town_class=   0
 		switch estimated_town_class=1  0
 		switch estimated_town_class=2  0.05
 		switch estimated_town_class=3  0.1
@@ -306,110 +306,107 @@ assign town_penalty
 
 assign surfacepenalty
 	add 
-		switch embedded_rails=tram|yes|rail 0.5
+		switch embedded_rails=tram|yes|rail 5
 		0
 		
-		switch surface=asphalt|paved 1
-		switch concrete=plates 0.1
-		switch concrete=lanes 0.1
-		switch surface=concrete|paving_stones 1
-		switch surface=wood|metal 0.2
-		switch surface=sett|grass_paver 0
-		switch surface=cobblestone 0  # add |unhewn_cobblestone when it's added to the routing data
-		switch surface=fine_gravel|compacted 0
-		switch surface=gravel|pebblestone 0
-		switch surface=ground|grass|unpaved|dirt|earth|clay 0
-		switch surface=mud|sand 1
-		switch tracktype=grade1	1
-		switch tracktype=grade2	0
-		switch tracktype=grade3	0
-		switch tracktype=grade4	0
-		switch tracktype=grade5	0
+		switch surface=asphalt|paved 0
+		switch concrete=plates 0.5
+		switch concrete=lanes 1
+		switch surface=concrete|paving_stones 0.2
+		switch surface=wood|metal 1
+		switch surface=sett|grass_paver 15
+		switch surface=cobblestone 50  # add |unhewn_cobblestone when it's added to the routing data
+		switch surface=fine_gravel|compacted 10
+		switch surface=gravel|pebblestone 30
+		switch surface=ground|grass|unpaved|dirt|earth|clay 40
+		switch surface=mud|sand 200
+		switch tracktype=grade1	0
+		switch tracktype=grade2	8
+		switch tracktype=grade3	15
+		switch tracktype=grade4	20
+		switch tracktype=grade5	25
 		0
 
 assign uphillsurfacepenalty
 	add 
-		switch embedded_rails=tram|yes|rail 0.2
+		switch embedded_rails=tram|yes|rail 2
 		0
 		
-		switch surface=asphalt|paved 1
-		switch concrete=plates 0.1
-		switch concrete=lanes 0.1
-		switch surface=concrete|paving_stones 1
-		switch surface=wood|metal 0.2
-		switch surface=sett|grass_paver 0
-		switch surface=cobblestone 0  # add |unhewn_cobblestone when it's added to the routing data
-		switch surface=fine_gravel|compacted 0
-		switch surface=gravel|pebblestone 0
-		switch surface=ground|grass|unpaved|dirt|earth|clay 0
-		switch surface=mud|sand 3
-		switch tracktype=grade1	1
-		switch tracktype=grade2	0
-		switch tracktype=grade3	0
-		switch tracktype=grade4	0
-		switch tracktype=grade5	0
+		switch surface=asphalt|paved 0
+		switch concrete=plates 0
+		switch concrete=lanes 0.5
+		switch surface=concrete|paving_stones 0
+		switch surface=wood|metal 0.5
+		switch surface=sett|grass_paver 3
+		switch surface=cobblestone 10  # add |unhewn_cobblestone when it's added to the routing data
+		switch surface=fine_gravel|compacted 5
+		switch surface=gravel|pebblestone 20
+		switch surface=ground|grass|unpaved|dirt|earth|clay 25
+		switch surface=mud|sand 100
+		switch tracktype=grade1	0
+		switch tracktype=grade2	4
+		switch tracktype=grade3	10
+		switch tracktype=grade4	15
+		switch tracktype=grade5	20
 		0
 
 assign downhillsurfacepenalty
 	add 
-		switch embedded_rails=tram|yes|rail 10
+		switch embedded_rails=tram|yes|rail 20
 		0
 		
-		switch surface=asphalt|paved 1
-		switch concrete=plates 0.1
-		switch concrete=lanes 0.1
+		switch surface=asphalt|paved 0
+		switch concrete=plates 3
+		switch concrete=lanes 10
 		switch surface=concrete|paving_stones 1
-		switch surface=wood|metal 0.2
-		switch surface=sett|grass_paver 0
-		switch surface=cobblestone 0  # add |unhewn_cobblestone when it's added to the routing data
-		switch surface=fine_gravel|compacted 0
-		switch surface=gravel|pebblestone 0
-		switch surface=ground|grass|unpaved|dirt|earth|clay 0
-		switch surface=mud|sand 1
-		switch tracktype=grade1	1
-		switch tracktype=grade2	0
-		switch tracktype=grade3	0
-		switch tracktype=grade4	0
-		switch tracktype=grade5	0
+		switch surface=wood|metal 20
+		switch surface=sett|grass_paver 30
+		switch surface=cobblestone 100  # add |unhewn_cobblestone when it's added to the routing data
+		switch surface=fine_gravel|compacted 50
+		switch surface=gravel|pebblestone 100
+		switch surface=ground|grass|unpaved|dirt|earth|clay 150
+		switch surface=mud|sand 1000
+		switch tracktype=grade1	0
+		switch tracktype=grade2	40
+		switch tracktype=grade3	50
+		switch tracktype=grade4	70
+		switch tracktype=grade5	100
 		0
 
 assign smoothnesspenalty
-	switch smoothness=excellent|very_good 1
-	switch smoothness=good 1
-	switch smoothness=intermediate 0
-	switch smoothness=bad 0
-	switch smoothness=very_bad 0
-	switch smoothness=horrible 10
+	switch smoothness=excellent|very_good 0
+	switch smoothness=good 0.05
+	switch smoothness=intermediate 2
+	switch smoothness=bad 10
+	switch smoothness=very_bad 40
+	switch smoothness=horrible 100
 	switch smoothness=very_horrible|impassable 100
 	0
 
 assign uphillsmoothnesspenalty
-	switch smoothness=excellent|very_good 1
-	switch smoothness=good 1
-	switch smoothness=intermediate 0
-	switch smoothness=bad 0
-	switch smoothness=very_bad 0
-	switch smoothness=horrible 20
+	switch smoothness=excellent|very_good 0
+	switch smoothness=good 0
+	switch smoothness=intermediate 0.3
+	switch smoothness=bad 3
+	switch smoothness=very_bad 10
+	switch smoothness=horrible 100
 	switch smoothness=very_horrible|impassable 100
 	0
 
 assign downhillsmoothnesspenalty
-	switch smoothness=excellent|very_good 1
-	switch smoothness=good 1
-	switch smoothness=intermediate 0
-	switch smoothness=bad 0
-	switch smoothness=very_bad 0
-	switch smoothness=horrible 1
-	switch smoothness=very_horrible|impassable 100
+	switch smoothness=excellent|very_good 0
+	switch smoothness=good 0.1
+	switch smoothness=intermediate 5
+	switch smoothness=bad 30
+	switch smoothness=very_bad 100
+	switch smoothness=horrible 1000
+	switch smoothness=very_horrible|impassable 1000
 	0
 
 assign mtb_scale_cost
 	switch mtb:scale=0	0
-	switch mtb:scale=1	0
-	switch mtb:scale=2	3
-	switch mtb:scale=3	10
-	switch mtb:scale=4	30
-	switch mtb:scale=5	100
+	switch mtb:scale=0+	20
+	switch mtb:scale=1	50  # can be steep
 	switch not mtb:scale=	9999  # all other mtb:scale
 	0
 
@@ -450,21 +447,21 @@ assign costfactor
 	max 1
 	switch highway=motorway|motorway_link 10000
 	switch route=ferry 10.67
-	switch highway=trunk|trunk_link 8
-	switch highway=primary|primary_link 5
-	switch highway=secondary|secondary_link 2
+	switch highway=trunk|trunk_link 4
+	switch highway=primary|primary_link 3
+	switch highway=secondary|secondary_link 1.4
 	switch highway=tertiary|tertiary_link 1.1
 	switch highway=unclassified 1
-	switch highway=residential 1.1
+	switch highway=residential 1.2
 	switch highway=service 1
 	switch highway=track 1
 	switch cycleway 1
-	switch highway=living_street 1.5
+	switch highway=living_street 2
 	switch highway=road 3
-	switch footway 20
-	switch highway=steps 30
-	switch highway=path 1
-	switch highway=bridleway 1
+	switch footway 40
+	switch highway=steps 100
+	switch highway=path 1.5
+	switch highway=bridleway 2
 	20
 
 
@@ -505,10 +502,10 @@ assign uphillcostfactor
 	switch cycleway 1
 	switch highway=living_street 1
 	switch highway=road 2
-	switch footway 2
-	switch highway=steps 30
+	switch footway 5
+	switch highway=steps 40
 	switch highway=path 1
-	switch highway=bridleway 1
+	switch highway=bridleway 1.5
 	20
 
 
@@ -538,21 +535,21 @@ assign downhillcostfactor
 	max 1
 	switch highway=motorway|motorway_link 10000
 	switch route=ferry 10.67
-	switch highway=trunk|trunk_link 3
-	switch highway=primary|primary_link 2
+	switch highway=trunk|trunk_link 1.5
+	switch highway=primary|primary_link 1.2
 	switch highway=secondary|secondary_link 1
 	switch highway=tertiary|tertiary_link 1
 	switch highway=unclassified 1
-	switch highway=residential 1.5
+	switch highway=residential 3
 	switch highway=service 1
-	switch highway=track 1
-	switch cycleway 1
-	switch highway=living_street 5
+	switch highway=track 1.5
+	switch cycleway 2
+	switch highway=living_street 6
 	switch highway=road 6
-	switch footway 40
-	switch highway=steps 30
-	switch highway=path 1
-	switch highway=bridleway 1
+	switch footway 50
+	switch highway=steps 300
+	switch highway=path 10
+	switch highway=bridleway 3
 	20
 
 
@@ -630,7 +627,7 @@ assign way_is_reverse
 
 assign barrier_cost
 	switch barrier=gate				1000
-	switch barrier=lift_gate			50
+	switch barrier=lift_gate			400
 	switch barrier=stile				2000
 	switch barrier=cycle_barrier			500
 	switch barrier=cattle_grid			200
@@ -649,7 +646,7 @@ assign barrier_cost
 	switch barrier=debris				2000
 	switch barrier=log				1000
 	#switch barrier=chicane				
-	switch barrier=kerb				10 # lower value if kerb=lowered when it becomes available
+	switch barrier=kerb				200 # lower value if kerb=lowered when it becomes available
 	switch barrier=sump_buster			50
 	#switch barrier=obstacle			100
 	switch barrier=horse_stile			1000
@@ -712,7 +709,7 @@ assign stop_cost
 	0
 
 assign level_crossing_cost
-	switch railway=crossing|level_crossing 10  # for the bumpiness of the track and the possibility of stopping for a train if there isn't already traffic signals
+	switch railway=crossing|level_crossing 150  # for the bumpiness of the track and the possibility of stopping for a train if there isn't already traffic signals
 	0
 
 assign slow_cost

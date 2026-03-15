@@ -68,7 +68,7 @@ assign footway
 
 assign turncost 
 	switch junction=roundabout 100
-	60  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
+	120  # Cost for a 90 degree turn. Other angles are calculated with turncost * cos(angle). This does not apply to roundabouts.
 
 assign initialclassifier
 	switch route=ferry 2

@@ -318,8 +318,9 @@ assign surfacepenalty
 		switch surface=cobblestone 0  # add |unhewn_cobblestone when it's added to the routing data
 		switch surface=fine_gravel|compacted 0
 		switch surface=gravel|pebblestone 0
-		switch surface=ground|grass|unpaved|dirt|earth|clay 0
-		switch surface=mud|sand 1
+		switch surface=ground|unpaved|dirt|earth|clay 0
+		switch surface=grass 1
+		switch surface=mud|sand 10
 		switch tracktype=grade1	1
 		switch tracktype=grade2	0
 		switch tracktype=grade3	0
@@ -341,8 +342,9 @@ assign uphillsurfacepenalty
 		switch surface=cobblestone 0  # add |unhewn_cobblestone when it's added to the routing data
 		switch surface=fine_gravel|compacted 0
 		switch surface=gravel|pebblestone 0
-		switch surface=ground|grass|unpaved|dirt|earth|clay 0
-		switch surface=mud|sand 3
+		switch surface=ground|unpaved|dirt|earth|clay 0
+		switch surface=grass 1
+		switch surface=mud|sand 20
 		switch tracktype=grade1	1
 		switch tracktype=grade2	0
 		switch tracktype=grade3	0
@@ -364,8 +366,9 @@ assign downhillsurfacepenalty
 		switch surface=cobblestone 0  # add |unhewn_cobblestone when it's added to the routing data
 		switch surface=fine_gravel|compacted 0
 		switch surface=gravel|pebblestone 0
-		switch surface=ground|grass|unpaved|dirt|earth|clay 0
-		switch surface=mud|sand 1
+		switch surface=ground|unpaved|dirt|earth|clay 0
+		switch surface=grass 0.5
+		switch surface=mud|sand 20
 		switch tracktype=grade1	1
 		switch tracktype=grade2	0
 		switch tracktype=grade3	0

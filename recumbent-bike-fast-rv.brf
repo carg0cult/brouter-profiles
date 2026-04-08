@@ -454,7 +454,7 @@ assign costfactor
 	switch cycleway 1
 	switch highway=living_street 2
 	switch highway=road 3
-	switch footway 40
+	switch footway 4
 	switch highway=steps 100
 	switch highway=path 1.5
 	switch highway=bridleway 2
@@ -498,7 +498,7 @@ assign uphillcostfactor
 	switch cycleway 1
 	switch highway=living_street 1
 	switch highway=road 2
-	switch footway 5
+	switch footway 2
 	switch highway=steps 40
 	switch highway=path 1
 	switch highway=bridleway 1.5
@@ -542,7 +542,7 @@ assign downhillcostfactor
 	switch cycleway 2
 	switch highway=living_street 6
 	switch highway=road 6
-	switch footway 50
+	switch footway 15
 	switch highway=steps 300
 	switch highway=path 10
 	switch highway=bridleway 3

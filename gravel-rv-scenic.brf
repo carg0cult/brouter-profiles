@@ -300,7 +300,6 @@ assign town_penalty
 	99
 
 
-
 assign surfacepenalty
 	add 
 		switch embedded_rails=tram|yes|rail 0.5
@@ -461,7 +460,7 @@ assign costfactor
 	switch cycleway 1
 	switch highway=living_street 1.5
 	switch highway=road 3
-	switch footway 20
+	switch footway 2
 	switch highway=steps 30
 	switch highway=path 1
 	switch highway=bridleway 1
@@ -505,7 +504,7 @@ assign uphillcostfactor
 	switch cycleway 1
 	switch highway=living_street 1
 	switch highway=road 2
-	switch footway 2
+	switch footway 1.1
 	switch highway=steps 30
 	switch highway=path 1
 	switch highway=bridleway 1
@@ -549,7 +548,7 @@ assign downhillcostfactor
 	switch cycleway 1
 	switch highway=living_street 5
 	switch highway=road 6
-	switch footway 40
+	switch footway 4
 	switch highway=steps 30
 	switch highway=path 1
 	switch highway=bridleway 1

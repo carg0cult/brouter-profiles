@@ -2,10 +2,10 @@
 
 ---context:global
 
-assign consider_noise = false   # %consider_noise% | Prefer a low-noise route | boolean
-assign consider_river = false   # %consider_river% | Prefer a route along rivers, lakes, etc. | boolean
-assign consider_forest = false  # %consider_forest% | Prefer a route in forest or parks | boolean
-assign consider_town = true     # %consider_town% | Activate to bypass cities / big towns as far as possible | boolean
+assign prefer_forest = 0  # %prefer_forest% | Prefer a route in forest or parks (0 - 4): 0 = don't prefer, 4 = strongly prefer       | number
+assign prefer_quiet = 0   # %prefer_quiet%  | Prefer a low-noise route (0 - 4): 0 = don't prefer, 4 = strongly prefer                | number
+assign prefer_river = 0   # %prefer_river%  | refer a route along rivers, lakes, etc. (0 - 4): 0 = don't prefer, 4 = strongly prefer | number
+assign prefer_rural = 0   # %prefer_rural%  | Avoid urban areas (0 - 4): 0 = don't prefer, 4 = strongly prefer                       | number
 
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean
@@ -255,53 +255,49 @@ assign downspeedpenalty
 	0
 
 
+assign noise_max_penalty multiply prefer_quiet 0.5
 assign noise_penalty
-	switch consider_noise
-		switch estimated_noise_class=   0
-		switch estimated_noise_class=1  0.2
-		switch estimated_noise_class=2  0.4
-		switch estimated_noise_class=3  0.7
-		switch estimated_noise_class=4  1
-		switch estimated_noise_class=5  1.25
-		switch estimated_noise_class=6  1.5
-		0
+	switch estimated_noise_class=   0
+	switch estimated_noise_class=1  multiply noise_max_penalty 0.05
+	switch estimated_noise_class=2  multiply noise_max_penalty 0.1
+	switch estimated_noise_class=3  multiply noise_max_penalty 0.25
+	switch estimated_noise_class=4  multiply noise_max_penalty 0.6
+	switch estimated_noise_class=5  multiply noise_max_penalty 0.8
+	switch estimated_noise_class=6  noise_max_penalty
 	0
 
+assign no_river_max_penalty multiply prefer_river 0.5
 assign no_river_penalty
-	switch consider_river
-		switch estimated_river_class=   0.6
-		switch estimated_river_class=1  0.5
-		switch estimated_river_class=2  0.35
-		switch estimated_river_class=3  0.2
-		switch estimated_river_class=4  0.1
-		switch estimated_river_class=5  0.05
-		switch estimated_river_class=6  0
-		99
-	0
+	switch estimated_river_class=   no_river_max_penalty
+	switch estimated_river_class=1  multiply no_river_max_penalty 0.8
+	switch estimated_river_class=2  multiply no_river_max_penalty 0.6
+	switch estimated_river_class=3  multiply no_river_max_penalty 0.25
+	switch estimated_river_class=4  multiply no_river_max_penalty 0.1
+	switch estimated_river_class=5  multiply no_river_max_penalty 0.05
+	switch estimated_river_class=6  0
+	99
 
+assign no_forest_max_penalty multiply prefer_forest 0.5
 assign no_forest_penalty
-	switch consider_forest
-		switch estimated_forest_class=   0.6
-		switch estimated_forest_class=1  0.5
-		switch estimated_forest_class=2  0.35
-		switch estimated_forest_class=3  0.2
-		switch estimated_forest_class=4  0.1
-		switch estimated_forest_class=5  0.05
-		switch estimated_forest_class=6  0
-		99
-	0
+	switch estimated_forest_class=   no_forest_max_penalty
+	switch estimated_forest_class=1  multiply no_forest_max_penalty 0.8
+	switch estimated_forest_class=2  multiply no_forest_max_penalty 0.6
+	switch estimated_forest_class=3  multiply no_forest_max_penalty 0.25
+	switch estimated_forest_class=4  multiply no_forest_max_penalty 0.1
+	switch estimated_forest_class=5  multiply no_forest_max_penalty 0.05
+	switch estimated_forest_class=6  0
+	99
 
+assign town_max_penalty multiply prefer_rural 0.5
 assign town_penalty
-	switch consider_town
-		switch estimated_town_class=   0
-		switch estimated_town_class=1  0
-		switch estimated_town_class=2  0.05
-		switch estimated_town_class=3  0.1
-		switch estimated_town_class=4  0.2
-		switch estimated_town_class=5  0.3
-		switch estimated_town_class=6  0.4
-		99
-	0
+	switch estimated_town_class=   0
+	switch estimated_town_class=1  multiply town_max_penalty 0.05
+	switch estimated_town_class=2  multiply town_max_penalty 0.1
+	switch estimated_town_class=3  multiply town_max_penalty 0.25
+	switch estimated_town_class=4  multiply town_max_penalty 0.6
+	switch estimated_town_class=5  multiply town_max_penalty 0.8
+	switch estimated_town_class=6  town_max_penalty
+	99
 
 
 assign surfacepenalty

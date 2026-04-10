@@ -318,10 +318,10 @@ assign surfacepenalty
 		switch surface=grass 1.5
 		switch surface=mud|sand 10
 		switch tracktype=grade1	1
-		switch tracktype=grade2	0
+		switch tracktype=grade2	0.3
 		switch tracktype=grade3	0
 		switch tracktype=grade4	0
-		switch tracktype=grade5	0
+		switch tracktype=grade5	0.5
 		0
 
 assign uphillsurfacepenalty
@@ -341,11 +341,11 @@ assign uphillsurfacepenalty
 		switch surface=ground|unpaved|dirt|earth|clay 0
 		switch surface=grass 2
 		switch surface=mud|sand 20
-		switch tracktype=grade1	1
-		switch tracktype=grade2	0
+		switch tracktype=grade1	0.8
+		switch tracktype=grade2	0.2
 		switch tracktype=grade3	0
 		switch tracktype=grade4	0
-		switch tracktype=grade5	0
+		switch tracktype=grade5	1
 		0
 
 assign downhillsurfacepenalty
@@ -366,10 +366,10 @@ assign downhillsurfacepenalty
 		switch surface=grass 1
 		switch surface=mud|sand 20
 		switch tracktype=grade1	1
-		switch tracktype=grade2	0
+		switch tracktype=grade2	0.8
 		switch tracktype=grade3	0
 		switch tracktype=grade4	0
-		switch tracktype=grade5	0
+		switch tracktype=grade5	0.1
 		0
 
 assign smoothnesspenalty

@@ -405,18 +405,28 @@ assign downhillsmoothnesspenalty
 assign mtb_scale_cost
 	switch mtb:scale=0	0
 	switch mtb:scale=1	0
-	switch mtb:scale=2	3
-	switch mtb:scale=3	10
-	switch mtb:scale=4	30
-	switch mtb:scale=5	100
+	switch mtb:scale=2	4
+	switch mtb:scale=3	20
+	switch mtb:scale=4	50
+	switch mtb:scale=5	500
 	switch not mtb:scale=	9999  # all other mtb:scale
+	0
+
+assign mtb_scale_uphill_cost
+	switch mtb:scale:uphill=0	0
+	switch mtb:scale:uphill=1	0
+	switch mtb:scale:uphill=2	5
+	switch mtb:scale:uphill=3	30
+	switch mtb:scale:uphill=4	100
+	switch mtb:scale:uphill=5	1000
+	switch not mtb:scale:uphill=	9999  # all other mtb:scale:uphill
 	0
 
 assign surfacing_cost
 	max max mtb_scale_cost smoothnesspenalty surfacepenalty
 
 assign uphill_surfacing_cost
-	max max mtb_scale_cost uphillsmoothnesspenalty uphillsurfacepenalty
+	max max mtb_scale_uphill_cost uphillsmoothnesspenalty uphillsurfacepenalty
 
 assign downhill_surfacing_cost
 	max max mtb_scale_cost downhillsmoothnesspenalty downhillsurfacepenalty

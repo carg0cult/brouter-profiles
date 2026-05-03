@@ -533,7 +533,6 @@ assign barrierPenalty
 	switch barrier=log				1000
 	#switch barrier=chicane				
 	switch barrier=kerb				50
-	switch barrier=sump_buster			50
 	#switch barrier=obstacle			100
 	switch barrier=horse_stile			1000
 	switch barrier=full-height_turnstile		10000

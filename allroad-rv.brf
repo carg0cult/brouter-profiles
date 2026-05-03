@@ -643,7 +643,6 @@ assign barrier_cost
 	switch barrier=log				1000
 	#switch barrier=chicane				
 	switch barrier=kerb				50 # lower value if kerb=lowered when it becomes available
-	switch barrier=sump_buster			50
 	#switch barrier=obstacle			100
 	switch barrier=horse_stile			1000
 	switch barrier=full-height_turnstile		10000

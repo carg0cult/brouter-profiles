@@ -10,7 +10,7 @@ assign prefer_rural = 0   # %prefer_rural%  | Avoid urban areas (0 - 4): 0 = don
 assign no_steps = false         # %no_steps% | No steps | boolean
 assign no_wrong_oneway = false  # %no_wrong oneway% | No one way streets in the opposite direction | boolean
 
-assign dismount_cost = 1000  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
+assign dismount_cost = 800  # %dismount_cost% | Acceptable detour in meters to avoid dismount, from 1 000 000 no dismount at all | number
 assign avoid_cycleways = 5   # %avoid_cycleways% | Avoid cycleways (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 assign avoid_elevation = 10  # %avoid_elevation% | Avoid elevation (0 - 10): 0 = don't avoid, 10 = strongly avoid | number
 
@@ -642,7 +642,9 @@ assign barrier_cost
 	switch barrier=debris				2000
 	switch barrier=log				1000
 	#switch barrier=chicane				
-	switch barrier=kerb				200 # lower value if kerb=lowered when it becomes available
+	switch barrier=kerb
+		switch kerb=lowered			50
+		dismount_cost
 	#switch barrier=obstacle			100
 	switch barrier=horse_stile			1000
 	switch barrier=full-height_turnstile		10000

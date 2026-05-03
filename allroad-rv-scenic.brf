@@ -641,8 +641,10 @@ assign barrier_cost
 	switch barrier=ditch				10000
 	switch barrier=debris				2000
 	switch barrier=log				1000
-	#switch barrier=chicane				
-	switch barrier=kerb				50 # lower value if kerb=lowered when it becomes available
+	#switch barrier=chicane			
+	switch barrier=kerb
+		switch kerb=lowered			10
+		dismount_cost
 	#switch barrier=obstacle			100
 	switch barrier=horse_stile			1000
 	switch barrier=full-height_turnstile		10000

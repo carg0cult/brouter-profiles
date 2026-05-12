@@ -310,9 +310,9 @@ assign surfacepenalty
 		switch concrete=lanes 0.1
 		switch surface=concrete|paving_stones 0
 		switch surface=wood|metal 0.2
-		switch surface=sett|grass_paver 1
-		switch surface=cobblestone 5  # add |unhewn_cobblestone when it's added to the routing data
-		switch surface=fine_gravel|compacted 1
+		switch surface=sett|grass_paver 0.5
+		switch surface=cobblestone 2  # add |unhewn_cobblestone when it's added to the routing data
+		switch surface=fine_gravel|compacted 0.5
 		switch surface=gravel|pebblestone 10
 		switch surface=ground|grass|unpaved|dirt|earth|clay 10
 		switch surface=mud|sand 100
@@ -334,8 +334,8 @@ assign uphillsurfacepenalty
 		switch surface=concrete|paving_stones 0
 		switch surface=wood|metal 0
 		switch surface=sett|grass_paver 0.2
-		switch surface=cobblestone 3  # add |unhewn_cobblestone when it's added to the routing data
-		switch surface=fine_gravel|compacted 0.5
+		switch surface=cobblestone 1  # add |unhewn_cobblestone when it's added to the routing data
+		switch surface=fine_gravel|compacted 0.2
 		switch surface=gravel|pebblestone 5
 		switch surface=ground|grass|unpaved|dirt|earth|clay 5
 		switch surface=mud|sand 50
@@ -356,9 +356,9 @@ assign downhillsurfacepenalty
 		switch concrete=lanes 1
 		switch surface=concrete|paving_stones 0
 		switch surface=wood|metal 5
-		switch surface=sett|grass_paver 2
-		switch surface=cobblestone 20  # add |unhewn_cobblestone when it's added to the routing data
-		switch surface=fine_gravel|compacted 10
+		switch surface=sett|grass_paver 1
+		switch surface=cobblestone 5  # add |unhewn_cobblestone when it's added to the routing data
+		switch surface=fine_gravel|compacted 5
 		switch surface=gravel|pebblestone 50
 		switch surface=ground|grass|unpaved|dirt|earth|clay 40
 		switch surface=mud|sand 500
